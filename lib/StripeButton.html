@@ -1,0 +1,36 @@
+<form style="float:right;" action="<?php echo $siteLoc . 'monitor' . $x . '?page=' . $_GET['page'] . '&charge' ?>" method="post">
+    <noscript>You must <a href="http://www.enable-javascript.com" target="_blank">enable JavaScript</a> in your web browser in order to pay via Stripe.</noscript>
+
+    <input 
+        type="submit" 
+        class="btn btn-default btn-xs"
+        value="Buy more credits"
+        data-key="<?php echo $strConfig['publishable_key']; ?>"
+        data-amount="150"
+        data-currency="gbp"
+        data-name="TinyMTR"
+        data-description="25 SMS Credits for &pound;1.50"
+		data-image="lib/stripelogo.png"
+    />
+
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script>
+    $(document).ready(function() {
+        $(':submit').on('click', function(event) {
+            event.preventDefault();
+
+            var $button = $(this),
+                $form = $button.parents('form');
+
+            var opts = $.extend({}, $button.data(), {
+                token: function(result) {
+                    $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
+                }
+            });
+
+            StripeCheckout.open(opts);
+        });
+    });
+    </script>
+</form>

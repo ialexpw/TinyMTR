@@ -1,0 +1,83 @@
+	/*
+		TinyMTR Web Monitor
+		Version 1.2
+		iAlex (http://codecanyon.net/iAlex)
+		main.css
+	*/
+
+body {
+	/*background:url(../img/gray-noise.png);*/
+	max-width:100%;
+	overflow-x:hidden;
+	font-family:'Open Sans',sans-serif;
+}
+
+.small {
+	font-size:12px;
+}
+
+.icons {
+	opacity: 0.7;
+	filter: alpha(opacity=70); /* msie */
+}
+
+input[type=checkbox].css-checkbox {
+	display:none;
+}
+
+input[type=checkbox].css-checkbox + label.css-label {
+	padding-left:20px;
+	height:20px; 
+	display:inline-block;
+	line-height:20px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size:15px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-label {
+	background-position: 0 -20px;
+}
+
+.title {
+	border-color: #ccc;
+	border-style: solid;
+    border-width: 1px;
+    margin:12px;
+    padding:12px;
+    padding-top:18px;
+    padding-bottom:18px;
+    border-radius:3px;
+}
+
+.circleHold {
+	border-color: #ccc;
+	border-style: solid;
+    border-width: 1px;
+    margin: 0 auto;
+    padding-top:70px;
+	border-radius: 50%;
+	width: 200px;
+	height: 200px;
+}
+
+.sideSpace {
+	margin-left:3px;
+	margin-right:3px;
+}
+
+canvas {
+	width: 100% !important;
+	max-width: 800px;
+	height:100px !important;
+}
+
+@media (max-width: 979px) {
+	canvas {
+		width: 100% !important;
+		max-width: 950px;
+		height:100px !important;
+	}
+}
