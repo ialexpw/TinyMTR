@@ -2,7 +2,7 @@
 	/*
 		TinyMTR Web Monitor
 		Version 1.2.1
-		iAlex (http://codecanyon.net/iAlex)
+		https://picotory.com
 		cron.php
 	*/
 
@@ -280,5 +280,5 @@
 	}
 
 	/* Send the webhooks */
-	//include 'sendhooks.php'; // Please read sendhooks.php to see why this is commented.
+	//include 'sendhooks.php';
 ?>

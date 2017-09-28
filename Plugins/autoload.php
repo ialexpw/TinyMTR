@@ -1,8 +1,8 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2
-		iAlex (http://codecanyon.net/iAlex)
+		Version 1.2.1
+		https://picotory.com
 		autoload.php
 	*/
 	

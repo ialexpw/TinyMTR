@@ -2,7 +2,7 @@
 			<hr>
 
 			<div class="footer">
-				<p class="small">&copy; Powered by <a href="http://monitor.pi2.xyz">TinyMTR</a> 2015</p>
+				<p class="small sideSpace">&copy; Powered by <a href="https://picotory.com">TinyMTR</a> <?php echo date("Y"); ?></p>
 			</div>
 		</div>
 	</body>

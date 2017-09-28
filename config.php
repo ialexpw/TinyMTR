@@ -2,7 +2,7 @@
 	/*
 		TinyMTR Web Monitor
 		Version 1.2.1
-		iAlex (http://codecanyon.net/iAlex)
+		https://picotory.com
 		config.php
 	*/
 	

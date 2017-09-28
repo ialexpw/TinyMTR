@@ -1,8 +1,8 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2
-		iAlex (http://codecanyon.net/iAlex)
+		Version 1.2.1
+		https://picotory.com
 		tinymtr.class.php
 	*/
 
@@ -223,8 +223,8 @@
 		if($back_up) {
 			$send = $mailer->setTo($email, 'TinyMTR')
 				->setSubject('Status-Alert - ' . $serAddr)
-				->setFrom('noreply@tinymtr.co', 'TinyMTR')
-				->addMailHeader('Reply-To', 'noreply@tinymtr.co', 'TinyMTR')
+				->setFrom('noreply@picotory.com', 'TinyMTR')
+				->addMailHeader('Reply-To', 'noreply@picotory.com', 'TinyMTR')
 				->addGenericHeader('X-Mailer', 'PHP/' . phpversion())
 				->addGenericHeader('Content-Type', 'text/html; charset="utf-8"')
 				->setMessage('<p>Status<br /><br />ID(' . $id . ') ' . $serAddr . ' seems to be back online!</p>')
@@ -233,8 +233,8 @@
 		}else{
 			$send = $mailer->setTo($email, 'TinyMTR')
 				->setSubject('Status-Alert - ' . $serAddr)
-				->setFrom('noreply@tinymtr.co', 'TinyMTR')
-				->addMailHeader('Reply-To', 'noreply@tinymtr.co', 'TinyMTR')
+				->setFrom('noreply@picotory.com', 'TinyMTR')
+				->addMailHeader('Reply-To', 'noreply@picotory.com', 'TinyMTR')
 				->addGenericHeader('X-Mailer', 'PHP/' . phpversion())
 				->addGenericHeader('Content-Type', 'text/html; charset="utf-8"')
 				->setMessage('<p>Status Alert!<br /><br />ID(' . $id . ') ' . $serAddr . ' seems to be offline!</p>')

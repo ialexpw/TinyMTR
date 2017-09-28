@@ -1,12 +1,11 @@
 	/*
 		TinyMTR Web Monitor
-		Version 1.2
-		iAlex (http://codecanyon.net/iAlex)
+		Version 1.2.1
+		https://picotory.com
 		main.css
 	*/
 
 body {
-	/*background:url(../img/gray-noise.png);*/
 	max-width:100%;
 	overflow-x:hidden;
 	font-family:'Open Sans',sans-serif;

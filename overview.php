@@ -2,7 +2,7 @@
 	/*
 		TinyMTR Web Monitor
 		Version 1.2.1
-		iAlex (http://codecanyon.net/iAlex)
+		https://picotory.com
 		overview.php
 	*/
 	
@@ -17,7 +17,7 @@
 	<head>
 		<title>TinyMTR : Painless Server Monitoring</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="author" content="iAlex@CodeCanyon">
+		<meta name="author" content="iAlex">
 		<meta name="description" content="TinyMTR is a simple server monitoring tool">
 		<link rel="shortcut icon" href="img/favicon.ico" />
 	

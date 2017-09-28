@@ -2,7 +2,7 @@
 	/*
 		TinyMTR Web Monitor
 		Version 1.2.1
-		iAlex (http://codecanyon.net/iAlex)
+		https://picotory.com
 		install.php
 	*/
 	
@@ -109,7 +109,7 @@
 	<head>
 		<title>TinyMTR : Painless Server Monitoring</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="author" content="iAlex@CodeCanyon">
+		<meta name="author" content="iAlex">
 		<meta name="description" content="TinyMTR is a simple server monitoring tool">
 		<link rel="shortcut icon" href="img/favicon.ico" />
 	
@@ -148,7 +148,6 @@
 		<div class="container-narrow">
 			<div class="masthead">
 				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
-				<!--<h2 align="center" class="muted sideSpace"><?php //echo $siteName; ?></h2><br />-->
 
 				<ul class="nav nav-pills nav-justified">
 					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
@@ -189,7 +188,7 @@
 							<div class="row">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-		                			<!-- Password-->
+		                			<!-- Email -->
 		                			<label class="control-label" for="email">Email</label>
 		                			<div class="controls sideSpace">
 		                  				<input type="text" id="email" name="email" value="" class="form-control">
@@ -203,7 +202,7 @@
 							<div class="row">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-		                			<!-- Password-->
+		                			<!-- Password -->
 		                			<label class="control-label" for="password">Password</label>
 		                			<div class="controls sideSpace">
 		                  				<input type="password" id="password" name="password" placeholder="" class="form-control">
@@ -217,7 +216,7 @@
 							<div class="row">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-		                			<!-- Password-->
+		                			<!-- Mobile -->
 		                			<label class="control-label" for="mobile">Mobile</label>
 		                			<div class="controls sideSpace">
 		                  				<input type="text" id="mobile" name="mobile" value="" class="form-control">

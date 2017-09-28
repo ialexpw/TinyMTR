@@ -1,10 +1,10 @@
 <?php
-/*
- * HTTP_R is a PHP class what makes it easy to request
- * local or external files with available request methods, the
- * HTTP_R class has 4 methods for requesting files including
- * the following: fopen, file_get_contents, curl, and file.
- */
+  /*
+		TinyMTR Web Monitor
+		Version 1.2.1
+		https://picotory.com
+		HTTP_R.class.php
+	*/
 
 class HTTP_R
 {

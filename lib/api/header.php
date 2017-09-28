@@ -3,7 +3,7 @@
 	<head>
 		<title>TinyMTR : Painless Server Monitoring</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="author" content="iAlex@CodeCanyon">
+		<meta name="author" content="iAlex">
 		<meta name="description" content="TinyMTR is a simple server monitoring tool">
 		<link rel="shortcut icon" href="img/favicon.ico" />
 
