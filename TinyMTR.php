@@ -115,7 +115,7 @@
 	############
 
 	class TinyMTR {
-		function getSystemMemInfo() {       
+		function getSystemMemInfo() {
 			$memData = explode("\n", file_get_contents("/proc/meminfo"));
 			$memInfo = array();
 			foreach ($memData as $line) {
@@ -123,6 +123,16 @@
 				$memInfo[$key] = trim($val);
 			}
 			return $memInfo;
+		}
+
+		function getRaidInfo() {
+			$memData = explode("\n", file_get_contents("/proc/mdstat"));
+			//$memInfo = array();
+			//foreach ($memData as $line) {
+			//	list($key, $val) = explode(":", $line);
+			//	$memInfo[$key] = trim($val);
+			//}
+			return print_r($memData);
 		}
 
 		function getSystemLoad() {
