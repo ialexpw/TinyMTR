@@ -5,7 +5,7 @@
 		https://picotory.com
 		register.php
 	*/
-	
+
 	include ("config.php");
 
 	// If not multi user, exit
@@ -19,12 +19,13 @@
 		$pass = $_POST['password'];
 		$email = $_POST['email'];
 		$mobile = $_POST['mobile'];
-		
+
 		if(!validateInput($user, 'user') || !validateInput($email, 'email')) {
 			header("Location: " . $siteLoc . "register" . $x . '?invalid');
 		}
 
-		$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
+		$hashPass = password_hash($pass, PASSWORD_DEFAULT);
+		//$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
 
 		/* Try and find the user */
 		$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");
@@ -34,11 +35,11 @@
 		$userDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		$count = count($userDetails);
-		
+
 		/* User exists */
 		if($count) {
 			header("Location: " . $siteLoc . "register" . $x . "?exists");
-		}else{		
+		}else{
 			/* Add new user */
 			$data = array( 'username' => $user, 'password' => $hashPass, 'email' => $email, 'mobile' => $mobile, 'timestamp' => time() );
 			$stmt = $dbh->prepare("INSERT INTO users (username, password, email, mobile, timestamp) VALUES (:username, :password, :email, :mobile, :timestamp)");
@@ -56,7 +57,7 @@
 		<meta name="author" content="iAlex">
 		<meta name="description" content="TinyMTR is a simple server monitoring tool">
 		<link rel="shortcut icon" href="img/favicon.ico" />
-	
+
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
@@ -85,9 +86,9 @@
 		</style>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-		
+
 	</head>
-	
+
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
@@ -107,14 +108,14 @@
 		  	</div>
 
 		  	<hr>
-			
+
 			<?php
 				if($sqlError) {
 					echo '<div class="alert alert-danger">';
 					echo '<strong>Error!</strong> ' . $errorLogged;
 					echo '</div>';
 				}
-				
+
 				if(isset($_GET['exists'])) {
 					echo '<div class="alert alert-danger">';
 					echo '<strong>Error!</strong> That username already exists, please try another.';
@@ -128,7 +129,7 @@
 		            <fieldset>
 		            	<div id="legend">
 		                	<legend class=""><?php echo $l['Register']; ?></legend>
-		              	</div>    
+		              	</div>
 		              	<div class="control-group">
 		              		<div class="row">
 								<div class="col-md-2"></div>
@@ -200,7 +201,7 @@
 		            </fieldset>
 	        	</form>
 	        </div>
-	        
+
 	        <hr>
 
 		  	<div class="footer">
