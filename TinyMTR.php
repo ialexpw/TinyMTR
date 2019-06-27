@@ -147,15 +147,10 @@
 		function getRaidInfo() {
 			$memData = explode("\n", file_get_contents("/proc/mdstat"));
 
-			$pos = strpos($memData, '(F)');
-			echo '<pre>';
-			print_r($memData);
-			echo '</pre>';
-
-			if ($pos === false) {
-				return array('raid' => "healthy");
-			}else{
+			if (in_array("(F)", $memData)) {
 				return array('raid' => "unhealthy");
+			}else{
+				return array('raid' => "healthy");
 			}
 		}
 
