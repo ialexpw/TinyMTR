@@ -13,7 +13,9 @@
 	/* Define the class */
 	$TinyMTR = new TinyMTR();
 
+	echo '<pre>';
 	print_r($TinyMTR->getRaidInfo());
+	echo '</pre>';
 
 	/* Get the information on System Memory */
 	$jsonInfo = json_encode($TinyMTR->getSystemMemInfo());
