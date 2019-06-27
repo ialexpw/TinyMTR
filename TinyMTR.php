@@ -13,6 +13,8 @@
 	/* Define the class */
 	$TinyMTR = new TinyMTR();
 
+	print_r($TinyMTR->getRaidInfo());
+
 	/* Get the information on System Memory */
 	$jsonInfo = json_encode($TinyMTR->getSystemMemInfo());
 	$jsonInfo = stripslashes($jsonInfo);
