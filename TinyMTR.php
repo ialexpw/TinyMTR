@@ -131,12 +131,14 @@
 
 		function getRaidInfo() {
 			$memData = explode("\n", file_get_contents("/proc/mdstat"));
-			//$memInfo = array();
-			//foreach ($memData as $line) {
-			//	list($key, $val) = explode(":", $line);
-			//	$memInfo[$key] = trim($val);
-			//}
-			return print_r($memData);
+
+			$pos = strpos($memData, "(F)");
+
+			if ($pos === false) {
+				return array('raid' => "healthy");
+			}else{
+				return array('raid' => "unhealthy");
+			}
 		}
 
 		function getSystemLoad() {
