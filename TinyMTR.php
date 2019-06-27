@@ -13,10 +13,6 @@
 	/* Define the class */
 	$TinyMTR = new TinyMTR();
 
-	echo '<pre>';
-	print_r($TinyMTR->getRaidInfo());
-	echo '</pre>';
-
 	/* Get the information on System Memory */
 	$jsonInfo = json_encode($TinyMTR->getSystemMemInfo());
 	$jsonInfo = stripslashes($jsonInfo);
@@ -32,6 +28,10 @@
 	/* Get the information on System Uptime */
 	$jsonUptime = json_encode($TinyMTR->getSystemUptime());
 	$jsonUptime = stripslashes($jsonUptime);
+
+	/* Get the information from RAID */
+	$jsonRaid = json_encode($TinyMTR->getRaidInfo());
+	$jsonRaid = stripslashes($jsonRaid);
 
 	###########
 	// CHECK //
@@ -116,6 +116,21 @@
 
 	############
 	// UPTIME //
+	############
+
+	echo '::';
+
+	############
+	//  RAID  //
+	############
+
+	$jsonDecRaid = json_decode($jsonRaid, true);
+	$Raid = json_encode($jsonDecRaid);
+
+	echo $Raid;
+
+	############
+	//  RAID  //
 	############
 
 	class TinyMTR {
