@@ -148,6 +148,9 @@
 			$memData = explode("\n", file_get_contents("/proc/mdstat"));
 
 			$pos = strpos($memData, '(F)');
+			echo '<pre>';
+			print_r($memData);
+			echo '</pre>';
 
 			if ($pos === false) {
 				return array('raid' => "healthy");
