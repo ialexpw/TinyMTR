@@ -13,10 +13,10 @@
 	include ("config.php");
 	
 	/* Gather versions */
-	$phpVersion = phpversion();
-	$phpCheck = seValid($phpVersion, 'php');
-	$sqlVersion = mysql_get_client_info();
-	$sqlCheck = seValid($sqlVersion, 'mysql');
+	//$phpVersion = phpversion();
+	//$phpCheck = seValid($phpVersion, 'php');
+	//$sqlVersion = mysql_get_client_info();
+	//$sqlCheck = seValid($sqlVersion, 'mysql');
 
 	/* If we have everything we need.. */
 	if(isset($_GET['do-install']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['mobile'])) {
