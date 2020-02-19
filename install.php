@@ -246,13 +246,6 @@
 						<hr>
 						
 						<p>Make sure you have configured the config.php file before running this web installer, the MySQL details must be correct to proceed successfully.</p>
-
-						<hr>
-
-						<p>PHP Version: <?php echo $phpVersion; if($phpCheck) { echo '<b style="float:right;">OK</b>'; }else{ echo '<b style="float:right;">FAIL</b>'; } ?></p>
-						<p>MySQL Version: <?php echo $sqlVersion; if($sqlCheck) { echo '<b style="float:right;">OK</b>'; }else{ echo '<b style="float:right;">FAIL</b>'; } ?></p>
-						
-						
 		            </fieldset>
 	        	</form>
 	        </div>
@@ -267,22 +260,3 @@
 
 	</body>
 </html>
-
-<?php
-	/* Check if the php/sql is a valid version */
-	function seValid($vers, $type) {
-		if($type == 'php') {
-			if ($vers > 5.2) {
-				return true;
-			}else{
-				return false;
-			}
-		}else if($type == 'mysql') {
-			if ($vers > 5.0) {
-				return true;
-			}else{
-				return false;
-			}
-		}
-	}
-?>
