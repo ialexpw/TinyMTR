@@ -12,26 +12,31 @@
 		$user = $_POST['username'];
 		$pass = $_POST['password'];
 
-		$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
+		//$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
 
 		/* Try and find the user */
-		$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username AND password = :password");
+		//$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username AND password = :password");
+		$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");
 		$stmt->bindParam(':username', $user);
-		$stmt->bindParam(':password', $hashPass);
+		//$stmt->bindParam(':password', $hashPass);
 		$stmt->execute();
 
 		$userDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		$count = count($userDetails);
 		
-		/* Account exists */
+		// Account exists
 		if($count) {
-			$_SESSION['Logged_In'] = 1;
-			$_SESSION['User'] = $user;
-			$_SESSION['UserID'] = $userDetails[0]['id'];
-			$_SESSION['UserLevel'] = $userDetails[0]['level'];
+			if(password_verify($pass, $userDetails[0]['password'])) {
+				$_SESSION['Logged_In'] = 1;
+				$_SESSION['User'] = $user;
+				$_SESSION['UserID'] = $userDetails[0]['id'];
+				$_SESSION['UserLevel'] = $userDetails[0]['level'];
 
-			header("Location: " . $siteLoc . "overview" . $x);
+				header("Location: " . $siteLoc . "overview" . $x);
+			}else{
+				header("Location: " . $siteLoc . "login" . $x . '?error');
+			}
 		}else{
 			header("Location: " . $siteLoc . "login" . $x . '?error');
 		}

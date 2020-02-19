@@ -11,12 +11,6 @@
 	error_reporting(E_ALL);
 	
 	include ("config.php");
-	
-	/* Gather versions */
-	//$phpVersion = phpversion();
-	//$phpCheck = seValid($phpVersion, 'php');
-	//$sqlVersion = mysql_get_client_info();
-	//$sqlCheck = seValid($sqlVersion, 'mysql');
 
 	/* If we have everything we need.. */
 	if(isset($_GET['do-install']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['mobile'])) {
@@ -25,7 +19,8 @@
 		$email = $_POST['email'];
 		$mobile = $_POST['mobile'];
 
-		$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
+		$hashPass = password_hash($pass, PASSWORD_DEFAULT);
+		//$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
 
 		/* Install the tables */
 		$sql = "CREATE TABLE IF NOT EXISTS cron (
@@ -90,7 +85,7 @@
 
 		$sq = $dbh->query($sql);
 
-		/* Try and find the user */
+		# Try and find the user
 		$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");
 		$stmt->bindParam(':username', $user);
 		$stmt->execute();
@@ -256,7 +251,5 @@
 				<p class="small sideSpace">&copy; Powered by <a href="https://picotory.com">TinyMTR</a> <?php echo date("Y"); ?></p>
 		  	</div>
 	    </div>
-
-
 	</body>
 </html>
