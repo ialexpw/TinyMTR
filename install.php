@@ -95,8 +95,8 @@
 		$count = count($userDetails);
 		
 		if(!$count) {
-			$data = array( 'username' => $user, 'password' => $hashPass, 'email' => $email, 'mobile' => $mobile, 'timestamp' => time(), 'level' => 5 );
-			$stmt = $dbh->prepare("INSERT INTO users (username, password, email, mobile, timestamp, level) VALUES (:username, :password, :email, :mobile, :timestamp, :level)");
+			$data = array( 'username' => $user, 'password' => $hashPass, 'email' => $email, 'timestamp' => time(), 'level' => 5 );
+			$stmt = $dbh->prepare("INSERT INTO users (username, password, email, timestamp, level) VALUES (:username, :password, :email, :timestamp, :level)");
 			$stmt->execute($data);
 
 			header("Location: " . $siteLoc . "login" . $x);
@@ -211,19 +211,6 @@
 							</div>
 		              	</div>
 
-		              	<div class="control-group">
-							<div class="row">
-								<div class="col-md-2"></div>
-								<div class="col-md-8">
-		                			<!-- Mobile -->
-		                			<label class="control-label" for="mobile">Mobile</label>
-		                			<div class="controls sideSpace">
-		                  				<input type="text" id="mobile" name="mobile" value="" class="form-control">
-		                			</div>
-								</div>
-								<div class="col-md-2"></div>
-							</div>
-		              	</div>
 						<br />
 						<div class="control-group">
 							<div class="row">
