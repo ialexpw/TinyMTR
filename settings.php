@@ -61,18 +61,6 @@
 			}
 		}
 		
-		// Changing number?
-		if(!empty($_POST['inputPhone'])) {
-			// New phone
-			$nPhone = $_POST['inputPhone'];
-			
-			// Update the number
-			$stmt = $dbh->prepare("UPDATE users SET mobile = :mobile WHERE id = :userid");
-			$stmt->bindParam(':mobile', $nPhone);
-			$stmt->bindParam(':userid', $_SESSION['UserID']);
-			$stmt->execute();
-		}
-		
 		// Redirect back to avoid resubmission
 		header("Location: " . $siteLoc . "settings" . $x);
 	}
@@ -120,7 +108,6 @@
 		<div class="container-narrow">
 			<div class="masthead">
 				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
-				<!--<h2 align="center" class="muted sideSpace"><?php //echo $siteName; ?></h2><br />-->
 
 				<ul class="nav nav-pills nav-justified">
 			  		<li class="sideSpace"><a href="<?php echo $siteLoc; ?>overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
@@ -233,15 +220,6 @@
 						
 						echo '<hr>';
 						
-						echo '<h4>' . $l['PhoneUpdate'] . '</h4><br />';
-						
-						echo '<div class="form-group">';
-						echo '<label for="inputPhone">Phone Number (leave blank for no change)</label>';
-						echo '<input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="' . $userDetails[0]['mobile'] . '">';
-						echo '</div>';
-						
-						echo '<hr>';
-						
 						echo '<h4>' . $l['PassUpdate'] . '</h4><br />';
 						
 						echo '<div class="form-group">';
@@ -272,7 +250,6 @@
 						echo '<table class="table table-bordered"><tr>';
 						echo '<th>Username</th>';
 						echo '<th>Email</th>';
-						echo '<th>Mobile</th>';
 						
 						// If Stripe plugin enabled
 						if($STRIPEINT) {
@@ -285,7 +262,6 @@
 							echo '<tr>';
 							echo '<td>' . $user['username'] . '</td>';
 							echo '<td>' . $user['email'] . '</td>';
-							echo '<td>' . coverPhone($user['mobile']) . '</td>';
 
 							// If Stripe plugin enabled
 							if($STRIPEINT) {
@@ -316,15 +292,6 @@
 						
 						echo '<hr>';
 						
-						echo '<h4>' . $l['PhoneUpdate'] . '</h4><br />';
-						
-						echo '<div class="form-group">';
-						echo '<label for="inputPhone">Phone Number (leave blank for no change)</label>';
-						echo '<input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="' . $userDetails[0]['mobile'] . '">';
-						echo '</div>';
-						
-						echo '<hr>';
-						
 						echo '<h4>' . $l['PassUpdate'] . '</h4><br />';
 						
 						echo '<div class="form-group">';
@@ -340,20 +307,14 @@
 						echo '<button type="submit" class="btn btn-default">' . $l['UpteDet'] . '</button>';
 						echo '</form>';
 					}
-
-					// Hide the last 4 numbers just for privacy
-					function coverPhone($phone) {
-						return substr($phone, 0, -4) . "****";
-					}
 				?>
 			</div>
 			
 			<hr>
 
 			<div class="footer">
-				<p class="small sideSpace">&copy; Powered by <a href="http://monitor.pi2.xyz">TinyMTR</a> 2015</p>
-			</div>
-			
+				<p class="small sideSpace">&copy; Powered by <a href="https://picotory.com">TinyMTR</a> <?php echo date("Y"); ?></p>
+		  	</div>
 		</div>
 	</body>
 </html>
