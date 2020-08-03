@@ -13,14 +13,12 @@
 	include ("config.php");
 
 	/* If we have everything we need.. */
-	if(isset($_GET['do-install']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email']) && !empty($_POST['mobile'])) {
+	if(isset($_GET['do-install']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email'])) {
 		$user = $_POST['username'];
 		$pass = $_POST['password'];
 		$email = $_POST['email'];
-		$mobile = $_POST['mobile'];
 
 		$hashPass = password_hash($pass, PASSWORD_DEFAULT);
-		//$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
 
 		/* Install the tables */
 		$sql = "CREATE TABLE IF NOT EXISTS cron (
@@ -66,7 +64,6 @@
 			username varchar(128),
 			password varchar(128),
 			email varchar(128) default '0',
-			mobile varchar(24) default '0',
 			timestamp int(22) not null,
 			credits int(10) default '0',
 			level int(5) default '0',
