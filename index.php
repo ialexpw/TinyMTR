@@ -84,9 +84,9 @@
 				<p class="lead">Have multiple servers and no easy way to monitor all of them? Use TinyMTR to monitor them all in a single easy-to-use interface. Comes with Email &amp; SMS alerts as standard.</p>
 				<?php
 					if($MULTIUSER) {
-						echo '<a class="btn btn-large btn-success" href="' . $siteLoc . 'register' . $x . '">' . $l['RegNow'] . '</a>';
+						echo '<a class="btn btn-large btn-success" href="register' . $x . '">' . $l['RegNow'] . '</a>';
 					}else{
-						echo '<a class="btn btn-large btn-success" href="' . $siteLoc . 'login' . $x . '">' . $l['LoginNow'] . '</a>';
+						echo '<a class="btn btn-large btn-success" href="login' . $x . '">' . $l['LoginNow'] . '</a>';
 					}
 				?>
 				
