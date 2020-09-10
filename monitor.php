@@ -8,7 +8,7 @@
 	
 	include ("config.php");
 	
-	/* Set out our variables */
+	# Set out our variables
 	$page = 1;
 	$Other = 0;
 	$serPerPage = 6;
@@ -17,50 +17,50 @@
 	$pageAmount = 0;
 	$toMany = 0;
 
-	/* Not logged in */
+	# Not logged in
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
 		header("Location: " . $siteLoc . "login" . $x);
 	}
 	
-	/* No page number - load page 1 */
+	# No page number - load page 1
 	if(empty($_GET['page'])) {
 		header("Location: " . $siteLoc . "monitor" . $x . "?page=1");
 	}
 	
-	/* Get the user details */
+	# Get the user details
 	$stmt = $dbh->prepare("SELECT * FROM users WHERE id = :id");
 	$stmt->bindParam(':id', $_SESSION['UserID']);
 	$stmt->execute();
 	$useDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
-	/* Credits, maybe used for a future plugin.. */
+	# Credits, maybe used for a future plugin..
 	$myCredits = $useDetails[0]['credits'];
 
-	/* Trying to add another server */
+	# Trying to add another server
 	if(isset($_GET['addserver']) && !empty($_POST['serveradd'])) {
 		$serAdd = $_POST['serveradd'];
 		
-		/* If Multi-server enabled ~ addon plugin tba */
+		# If Multi-server enabled ~ addon plugin tba
 		if(!empty($_POST['servers']) && $MULTISERV) {
 			$useServer = $_POST['servers'];
 		}else{
 			$useServer = 0;
 		}
 		
-		/* If it contains https, set to secure */
+		# If it contains https, set to secure
 		if(strpos($serAdd, 'https://') !== false) {
 			$useSecure = 1;
 		}else{
 			$useSecure = 0;
 		}
 
-		/* Remove bits we do not need */
+		# Remove bits we do not need
 		$serAdd = removePrefix($serAdd);
 
-		/* Get the IP from domain */
+		# Get the IP from domain
 		$serIP = gethostbyname($serAdd);
 
-		/* Limit the user to a certain amount if multi-user */
+		# Limit the user to a certain amount if multi-user
 		if($MULTIUSER) {
 			$stmt = $dbh->prepare("SELECT * FROM servers WHERE userid = :userid");
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
@@ -73,7 +73,7 @@
 			}
 		}
 
-		/* See if we can find an existing server with the same name */
+		# See if we can find an existing server with the same name
 		$stmt = $dbh->prepare("SELECT * FROM servers WHERE userid = :userid AND address = :address AND ipaddress = :ipaddress AND location = :location");
 		$stmt->bindParam(':userid', $_SESSION['UserID']);
 		$stmt->bindParam(':address', $serAdd);
@@ -83,12 +83,12 @@
 		$serDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$countSer = count($serDetails);
 
-		/* Server exists already in the list */
+		# Server exists already in the list
 		if($countSer > 0) {
 			$doesExist = 1;
 		}
 
-		/* Domain is valid, and does not exist, adding a new one! */
+		# Domain is valid, and does not exist, adding a new one!
 		if(validDomain($serAdd) && !$doesExist && !$toMany) {
 			/* Do we require the TinyMTR.php file? */
 			if($reqMtr) {
@@ -100,58 +100,58 @@
 			}
 			$stmt->execute($data);
 
-			header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $_GET['page']);
+			header("Location: monitor" . $x . "?page=" . $_GET['page']);
 		}else{
 			if($doesExist) {
-				header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $_GET['page'] . "&exists");
+				header("Location: monitor" . $x . "?page=" . $_GET['page'] . "&exists");
 			}else if($toMany){
-				header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $_GET['page'] . "&tomany");
+				header("Location: monitor" . $x . "?page=" . $_GET['page'] . "&tomany");
 			}else{
-				header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $_GET['page'] . "&invalid");
+				header("Location: monitor" . $x . "?page=" . $_GET['page'] . "&invalid");
 			}
 		}
 	}
 
-	/* Trying to remove a server */
+	# Trying to remove a server
 	if(!empty($_GET['remove'])) {
 		$remID = $_GET['remove'];
 
-		/* Select the ID with the username */
+		# Select the ID with the username
 		$stmt = $dbh->prepare("SELECT * FROM servers WHERE id = :remid AND userid = :userid");
 		$stmt->bindParam(':remid', $remID);
 		$stmt->bindParam(':userid', $_SESSION['UserID']);
 		$stmt->execute();
 		$remDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
-		/* See if there actually is a server */
+		# See if there actually is a server
 		$countRem = count($remDetails);
 		
-		/* Cannot find a server with that ID by this user, redirect */
+		# Cannot find a server with that ID by this user, redirect
 		if($countRem == 0) {
-			header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $_GET['page'] . "&bad-id");
+			header("Location: monitor" . $x . "?page=" . $_GET['page'] . "&bad-id");
 		}else{
-			/* Delete the server */
+			# Delete the server
 			$stmt = $dbh->prepare("DELETE FROM servers WHERE id = :remid AND userid = :userid");
 			$stmt->bindParam(':remid', $remID);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 			
-			/* Delete the records */
+			# Delete the records
 			$stmt = $dbh->prepare("DELETE FROM records WHERE serid = :remid AND userid = :userid");
 			$stmt->bindParam(':remid', $remID);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 
-			header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $_GET['page']);
+			header("Location: monitor" . $x . "?page=" . $_GET['page']);
 		}
 	}
 
-	/* Using Stripe module */
+	# Using Stripe module
 	if(isset($_GET['charge']) && isset($_POST['stripeToken'])) {
-		/* Get payment token */
+		# Get payment token
 		$token  = $_POST['stripeToken'];
 		
-		/* Set success variable */
+		# Set success variable
 		$chargeSuccess = 0;
 
 		try {
@@ -182,19 +182,19 @@
 			$error = $e->getMessage();
 		}
 
-		/* Add credits here */
+		# Add credits here
 		if($chargeSuccess) {
 			$stmt = $dbh->prepare("UPDATE users SET credits = credits+25 WHERE id = :userid");
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 
-			/* Redirect to success */
+			# Redirect to success
 			header("Location: " . $siteLoc . "monitor" . $x . '?page=' . $_GET['page'] . '&success');
 		}else{
-			/* Set the error message into a session */
+			# Set the error message into a session
 			$_SESSION['Stripe-Error'] = $error;
 
-			/* Redirect to error */
+			# Redirect to error
 			header("Location: " . $siteLoc . "monitor" . $x . '?page=' . $_GET['page'] . '&stripe-error');
 		}
 	}
@@ -210,7 +210,7 @@
 
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
+		<link href="css/main.css" rel="stylesheet" media="screen">
 		<style type="text/css">
 		  body {
 			padding-top: 20px;
@@ -241,20 +241,19 @@
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
-				<!--<h2 align="center" class="muted sideSpace"><?php //echo $siteName; ?></h2><br />-->
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
-					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
+					<li class="sideSpace"><a href="overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
+					<li class="active sideSpace"><a href="monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
 					<?php
 						if($MULTISERV) {
-							echo '<li class="sideSpace"><a href="' . $siteLoc . 'remote' . $x . '">' . $l['Remote'] . '</a></li>';
+							echo '<li class="sideSpace"><a href="remote' . $x . '">' . $l['Remote'] . '</a></li>';
 						}
 
-						echo '<li class="sideSpace"><a href="' . $siteLoc . 'settings' . $x . '">' . $l['Settings'] . '</a></li>';
+						echo '<li class="sideSpace"><a href="settings' . $x . '">' . $l['Settings'] . '</a></li>';
 					?>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
+					<li class="sideSpace"><a href="logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
 				</ul>
 		  	</div>
 			
@@ -264,49 +263,49 @@
 				<h2>Monitors</h2>
 				<br />
 		  		<?php
-					/* Install file exists */
+					# Install file exists
 					if(file_exists('install.php')) {
 						echo '<div class="alert alert-danger">';
 						echo '<strong>Error!</strong> Install file is still uploaded! You may want to delete this file for security purposes!';
 						echo '</div>';
 					}
 
-					/* Stripe payment error */
+					# Stripe payment error
 					if(isset($_GET['stripe-error']) && isset($_SESSION['Stripe-Error'])) {
 						echo '<div class="alert alert-danger">';
 						echo '<strong>Error!</strong> ' . $_SESSION['Stripe-Error'];
 						echo '</div>';
 					}
 					
-					/* Invalid Domain */
+					# Invalid Domain
 		  			if(isset($_GET['invalid'])) {
 		  				echo '<div class="alert alert-warning">';
 		  				echo '<strong>Warning!</strong> That does not seem to be a valid domain. Please check it and try again!';
 		  				echo '</div>';
 		  			}
 
-		  			/* To many */
+		  			# To many
 		  			if(isset($_GET['tomany'])) {
 		  				echo '<div class="alert alert-warning">';
 		  				echo '<strong>Warning!</strong> I think you are monitoring enough servers!';
 		  				echo '</div>';
 		  			}
 					
-					/* Domain Exists */
+					# Domain Exists
 		  			if(isset($_GET['exists'])) {
 		  				echo '<div class="alert alert-warning">';
 		  				echo '<strong>Warning!</strong> The domain that you have entered seems to exist already in your monitoring list!';
 		  				echo '</div>';
 		  			}
 					
-					/* Bad ID */
+					# Bad ID
 					if(isset($_GET['bad-id'])) {
 						echo '<div class="alert alert-warning">';
 						echo '<strong>Warning!</strong> You do not seem to have a monitor to remove with the ID supplied, please try again!';
 						echo '</div>';
 					}
 		  			
-					/* Is the page valid? If not - page 1 */
+					# Is the page valid? If not - page 1
 					if(!empty($_GET['page'])) {
 					
 						/* Is page numeric? */
@@ -316,51 +315,51 @@
 							$page = 1;
 						}
 						
-						/* If the page is not 1, work out the servers needed */
+						# If the page is not 1, work out the servers needed
 						if ($page != 1)
 						{
 							$Other = ($page * $serPerPage - $serPerPage);
 						}
 						
-						/* Select all the servers for the page */
+						# Select all the servers for the page
 						$stmt = $dbh->prepare("SELECT * FROM servers WHERE userid = :userid ORDER BY id ASC LIMIT $Other, $serPerPage");
 						$stmt->bindParam(':userid', $_SESSION['UserID']);
 						$stmt->execute();
 						$serDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-						/* Find the amount of servers they have */
+						# Find the amount of servers they have
 						$stmt = $dbh->prepare("SELECT * FROM servers WHERE userid = :userid");
 						$stmt->bindParam(':userid', $_SESSION['UserID']);
 						$stmt->execute();
 						$servDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						
-						/* Count how many servers they have */
+						# Count how many servers they have
 						$countSer = count($servDetails);
 						
-						/* If there is less than can fit on a page, no pagination */
+						# If there is less than can fit on a page, no pagination
 						if($countSer < $serPerPage){
 							$pagination = 0;
 						}
 						
-						/* If more than one server, check per page */
+						# If more than one server, check per page
 						if($countSer > 0) {
 							/* Get amount of pages needed & round up. */
 							$pageAmount = ceil($countSer/$serPerPage);
 						}
 						
-						/* If it's more, or if it's less than 0 it is wrong */
+						# If it's more, or if it's less than 0 it is wrong
 						if ($page > $pageAmount || $page < 0) {
 							$page = '1';
 						}
 						
-						/* If the page is not 1, work out the servers needed */
+						# If the page is not 1, work out the servers needed
 						if ($page != 1)
 						{
 							$Other = ($page * $serPerPage - $serPerPage);
 						}
 					}
 
-					/* If adding new server */
+					# If adding new server
 					if(isset($_GET['add'])) {
 						echo '<form class="form-horizontal" action="?page=' . $_GET['page'] . '&addserver" method="POST">';
 						
@@ -371,9 +370,9 @@
 								</span>
 							</div><br />';
 						
-						/* Multi server support */
+						# Multi server support
 						if($MULTISERV) {
-							/* Count through locations */
+							# Count through locations
 							$i=0;
 							echo '<select class="form-control" name="servers">';
 							foreach ($aServers as $arrServ) {
@@ -386,18 +385,17 @@
 					}else{
 						echo '<p style="float:left;"><a href="' . $siteLoc . 'monitor' . $x . '?page=' . $_GET['page'] . '&add">' . $l['AddMonitor'] . '</a>';
 
-						/* Add credits if Stripe module & multi-user activated */
+						# Add credits if Stripe module & multi-user activated
 						if($MULTIUSER && $STRIPEINT) {
 							include("lib/StripeButton.html");
 							echo '<a href="#" style="margin-top:1px; margin-right:3px; margin-left:3px; float:right;" class="btn btn-default disabled btn-xs" role="button">Current Credits: ' . $myCredits . '</a>';
-							//echo '<span style="float:right;" class="badge label-primary">' . $myCredits . '</span><br />';
 						}
 						echo '</p><br />';
 					}
 				?>
 				
 				<?php
-					// Show as a table
+					# Show as a table
 					if(!empty($_GET['view']) && $_GET['view'] == 1) {
 				?>
 				<table class="table table-striped table-bordered">
@@ -415,20 +413,20 @@
 								foreach ($serDetails as $serverRow) {
 									if($serverRow['active']) {
 										if(pingDomain($serverRow['address'], $serverRow['secure']) != -1) {
-											$state = '<img class="icons" style="padding-bottom:5px;" src="' . $siteLoc . 'img/tick.png" alt="Tick" /> ' . $l['Online'];
+											$state = '<img class="icons" style="padding-bottom:5px;" src="img/tick.png" alt="Tick" /> ' . $l['Online'];
 										}else{
-											$state = '<img class="icons" style="padding-bottom:5px;" src="' . $siteLoc . 'img/cross.png" alt="Tick" /> ' . $l['Offline'];
+											$state = '<img class="icons" style="padding-bottom:5px;" src="img/cross.png" alt="Tick" /> ' . $l['Offline'];
 										}
 									}else{
-										$state = '<img class="icons" style="padding-bottom:5px;" src="' . $siteLoc . 'img/cross.png" alt="Tick" /> ' . $l['Inactive'] . '<button class="btn btn-default btn-xs modalButtons pull-right" data-toggle="modal" data-target="#myModalSub">?</button>';
+										$state = '<img class="icons" style="padding-bottom:5px;" src="img/cross.png" alt="Tick" /> ' . $l['Inactive'] . '<button class="btn btn-default btn-xs modalButtons pull-right" data-toggle="modal" data-target="#myModalSub">?</button>';
 									}
 									
 									echo '<tr>';
-									echo '<td><a target="_blank" href="' . $siteLoc . 'api.php?id=' . $serverRow['id'] . '&hash=' . validateHash($serverRow['id']) . '&public">' . $serverRow['id'] . '</a><a href="?page=' . $_GET['page'] . '&remove=' . $serverRow['id'] . '"><img class="icons" align="right" style="padding-bottom:5px;" src="' . $siteLoc . 'img/bin.png" /></a>';
+									echo '<td><a target="_blank" href="api.php?id=' . $serverRow['id'] . '&hash=' . validateHash($serverRow['id']) . '&public">' . $serverRow['id'] . '</a><a href="?page=' . $_GET['page'] . '&remove=' . $serverRow['id'] . '"><img class="icons" align="right" style="padding-bottom:5px;" src="' . $siteLoc . 'img/bin.png" /></a>';
 
-									/* Only if the monitor is active show the stats */
+									# Only if the monitor is active show the stats
 									if($serverRow['active']) {
-										echo '<a href="' . $siteLoc . 'statistics' . $x . '?id=' . $serverRow['id'] . '&5min"><img class="icons" align="right" style="padding-bottom:5px;" src="' . $siteLoc . 'img/flux.png" /></a></td>';
+										echo '<a href="statistics' . $x . '?id=' . $serverRow['id'] . '&5min"><img class="icons" align="right" style="padding-bottom:5px;" src="' . $siteLoc . 'img/flux.png" /></a></td>';
 									}
 
 									echo '<td class="hidden-xs">' . $serverRow['ipaddress'] . '</td>';
@@ -450,11 +448,11 @@
 									echo '</tr>';								
 								}
 							}else{
-								// Ugly way of doing it, but you should not be here
+								# Ugly way of doing it, but you should not be here
 								if(!empty($_GET['page']) && $_GET['page'] > 1) {
 									$pageMinus = $_GET['page'] - 1;
 
-									header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $pageMinus);
+									header("Location: monitor" . $x . "?page=" . $pageMinus);
 								}
 							}
 						?>
@@ -462,7 +460,7 @@
 				</table>
 				
 				<?php
-					// Show as boxes
+					# Show as boxes
 					}else if(empty($_GET['view'])){
 						if(!empty($serDetails)) {
 							echo '<br /><div class="row">';
@@ -480,7 +478,7 @@
 									$pState = 'default';
 								}
 								
-								// Show what port to ping
+								# Show what port to ping
 								if($serverRow['secure']) {
 									$mPort = '443';
 								}else{
@@ -493,19 +491,19 @@
 								echo '<p>Public IP: ' . $serverRow['ipaddress'] . '<span style="float: right;">Port: ' . $mPort . '</span></p>';
 
 								echo '<div align="center">';
-								echo '<a target="_blank" href="' . $siteLoc . 'api.php?id=' . $serverRow['id'] . '&hash=' . validateHash($serverRow['id']) . '&public" class="btn btn-default btn-xs" role="button">Public Status Page</a>';
+								echo '<a target="_blank" href="api.php?id=' . $serverRow['id'] . '&hash=' . validateHash($serverRow['id']) . '&public" class="btn btn-default btn-xs" role="button">Public Status Page</a>';
 								
-								// If it is inactive, disable the button
+								# If it is inactive, disable the button
 								if($pState == 'default') {
-									echo '<a href="' . $siteLoc . 'statistics' . $x . '?id=' . $serverRow['id'] . '&5min" style="margin-left:5px;" class="btn btn-default disabled btn-xs" role="button">View Statistics</a>';
+									echo '<a href="statistics' . $x . '?id=' . $serverRow['id'] . '&5min" style="margin-left:5px;" class="btn btn-default disabled btn-xs" role="button">View Statistics</a>';
 								}else{
-									echo '<a href="' . $siteLoc . 'statistics' . $x . '?id=' . $serverRow['id'] . '&5min" style="margin-left:5px;" class="btn btn-default btn-xs" role="button">View Statistics</a>';
+									echo '<a href="statistics' . $x . '?id=' . $serverRow['id'] . '&5min" style="margin-left:5px;" class="btn btn-default btn-xs" role="button">View Statistics</a>';
 								}
 								
 								echo '</div>';
 								echo '<br />';
 								
-								// Show where we are pinging from - not local
+								# Show where we are pinging from - not local
 								if($MULTISERV && $aServers[$serverRow['location']]['Shorter'] != 'LC') {
 									echo '<span class="label label-primary">' . $aServers[$serverRow['location']]['Country'] . '</span>';
 								}
@@ -518,20 +516,20 @@
 							}
 							echo '</div>';
 						}else{
-							// Ugly way of doing it, but you should not be here
+							# Ugly way of doing it, but you should not be here
 							if(!empty($_GET['page']) && $_GET['page'] > 1) {
 								$pageMinus = $_GET['page'] - 1;
 
-								header("Location: " . $siteLoc . "monitor" . $x . "?page=" . $pageMinus);
+								header("Location: monitor" . $x . "?page=" . $pageMinus);
 							}
 						}
 					}
 				?>
 				
 				<?php
-					/* If no servers... */
+					# If no servers...
 					if(empty($serDetails)) {
-						echo '<p align="center">Currently no servers have been added! Try <a href="' . $siteLoc . 'monitor' . $x . '?page=' . $_GET['page'] . '&add">adding one</a> now..</p>';
+						echo '<p align="center">Currently no servers have been added! Try <a href="monitor' . $x . '?page=' . $_GET['page'] . '&add">adding one</a> now..</p>';
 					}
 				
 					/* Set out pagination numbers */
@@ -542,17 +540,17 @@
 					if($pagination) {
 						/* First page, just need next button */
 						if($page == 1 && $countSer > $serPerPage){
-							echo '<span style="float:left;">' . $l['Previous'] . '</span> <span style="float:right;"><a href="' . $siteLoc . 'monitor' . $x . '?page=' . $pagePlus . '">' . $l['Next'] . '</a></span>';
+							echo '<span style="float:left;">' . $l['Previous'] . '</span> <span style="float:right;"><a href="monitor' . $x . '?page=' . $pagePlus . '">' . $l['Next'] . '</a></span>';
 						}
 						/* Last page, just show previous button */
 						elseif($page == $pageAmount && $countSer > $serPerPage) {
-							echo '<span style="float:left;"><a href="' . $siteLoc . 'monitor' . $x . '?page=' . $pageMinus . '">' . $l['Previous'] . '</a></span> <span style="float:right;">' . $l['Next'] . '</span>';
+							echo '<span style="float:left;"><a href="monitor' . $x . '?page=' . $pageMinus . '">' . $l['Previous'] . '</a></span> <span style="float:right;">' . $l['Next'] . '</span>';
 						}
 						/* Exact amount, no pagination */
 						elseif($page == 1 && $countSer == $serPerPage) {
 							echo '<span style="float:left;"></span> <span style="float:right;"></span>';
 						}else{
-							echo '<span style="float:left;"><a href="' . $siteLoc . 'monitor' . $x . '?page=' . $pageMinus . '">' . $l['Previous'] . '</a></span> <span style="float:right;"><a href="' . $siteLoc . 'monitor' . $x . '?page=' . $pagePlus . '">' . $l['Next'] . '</a></span>';
+							echo '<span style="float:left;"><a href="monitor' . $x . '?page=' . $pageMinus . '">' . $l['Previous'] . '</a></span> <span style="float:right;"><a href="' . $siteLoc . 'monitor' . $x . '?page=' . $pagePlus . '">' . $l['Next'] . '</a></span>';
 						}
 					}
 				?>
@@ -582,7 +580,7 @@
 								<p>Every 5 minutes TinyMTR's cron will check for this file and will set the the server active
 								if it finds it, otherwise it will stay inactive and data will not be collected.</p><br />
 
-								<p align="center"><a href="<?php echo $siteLoc; ?>dl<?php echo $x; ?>">Download the file</a></p>
+								<p align="center"><a href="dl<?php echo $x; ?>">Download the file</a></p>
 							</div>
 						</div>
 					</div>
