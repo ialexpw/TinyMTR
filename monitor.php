@@ -19,12 +19,12 @@
 
 	# Not logged in
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
-		header("Location: " . $siteLoc . "login" . $x);
+		header("Location: login" . $x);
 	}
 	
 	# No page number - load page 1
 	if(empty($_GET['page'])) {
-		header("Location: " . $siteLoc . "monitor" . $x . "?page=1");
+		header("Location: monitor" . $x . "?page=1");
 	}
 	
 	# Get the user details

@@ -49,7 +49,7 @@
 	
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
+		<link href="css/main.css" rel="stylesheet" media="screen">
 		<style type="text/css">
 		  body {
 			padding-top: 20px;
@@ -81,12 +81,12 @@
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
-					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
+					<li class="sideSpace"><a href="index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
+					<li class="sideSpace"><a href="about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
+					<li class="active sideSpace"><a href="login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
 					<?php
 						if($MULTIUSER) {
 							echo '<li class="sideSpace"><a href="register' . $x . '">' . $l['Register'] . '</a></li>';
