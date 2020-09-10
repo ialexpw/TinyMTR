@@ -8,6 +8,7 @@
 	
 	include ("config.php");
 
+	# Not logged in
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
 		header("Location: login" . $x);
 	}

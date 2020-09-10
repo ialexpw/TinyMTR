@@ -10,7 +10,7 @@
 	
 	# Not logged in
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
-		header("Location: " . $siteLoc . "login" . $x);
+		header("Location: login" . $x);
 	}
 
 	$userLevel = $_SESSION['UserLevel'];

@@ -167,8 +167,8 @@
 	
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
-		<link rel="stylesheet" href="<?php echo $siteLoc; ?>css/morris-0.4.3.min.css">
+		<link href="css/main.css" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="css/morris-0.4.3.min.css">
 
 		<style type="text/css">
 		  body {
@@ -451,39 +451,7 @@
 							<div class="row">
 								<p style="margin-left:20px;"><b>Alerts</b></p>
 								<div class="col-md-2"></div>
-								<div class="col-md-4" align="center">
-									<p>
-										SMS Alerts for this monitor
-										<div class="btn-group" data-toggle="buttons">
-											<?php
-												if($useNexmo) {
-													# SMS enabled
-													if($alrText == '1' || $alrText == '3') {
-														echo '<label class="btn btn-success btn-xs active">';
-														echo '<input type="radio" name="sms-option" id="sms-1" value="on" checked=""> On';
-													}else{
-														echo '<label class="btn btn-success btn-xs">';
-														echo '<input type="radio" name="sms-option" id="sms-1" value="on"> On';
-													}
-													echo '</label>';
-
-													# SMS disabled
-													if($alrText == '0' || $alrText == '2') {
-														echo '<label class="btn btn-danger btn-xs active">';
-														echo '<input type="radio" name="sms-option" id="sms-2" value="off" checked=""> Off';
-													}else{
-														echo '<label class="btn btn-danger btn-xs">';
-														echo '<input type="radio" name="sms-option" id="sms-2" value="off"> Off';
-													}
-													echo '</label>';
-												}else{
-													echo '<p>Disabled</p>';
-												}
-											?>
-										</div>
-									</p>
-								</div>
-								<div class="col-md-4" align="center">
+								<div class="col-md-8" align="center">
 									<p>
 										Email Alerts for this monitor
 										<div class="btn-group" data-toggle="buttons">
