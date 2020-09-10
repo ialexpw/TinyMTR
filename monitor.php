@@ -532,21 +532,21 @@
 						echo '<p align="center">Currently no servers have been added! Try <a href="monitor' . $x . '?page=' . $_GET['page'] . '&add">adding one</a> now..</p>';
 					}
 				
-					/* Set out pagination numbers */
+					# Set out pagination numbers
 					$pagePlus = $_GET['page'] + 1;
 					$pageMinus = $_GET['page'] - 1;
 					
-					/* Pagination enabled? */
+					# Pagination enabled?
 					if($pagination) {
-						/* First page, just need next button */
+						# First page, just need next button
 						if($page == 1 && $countSer > $serPerPage){
 							echo '<span style="float:left;">' . $l['Previous'] . '</span> <span style="float:right;"><a href="monitor' . $x . '?page=' . $pagePlus . '">' . $l['Next'] . '</a></span>';
 						}
-						/* Last page, just show previous button */
+						# Last page, just show previous button
 						elseif($page == $pageAmount && $countSer > $serPerPage) {
 							echo '<span style="float:left;"><a href="monitor' . $x . '?page=' . $pageMinus . '">' . $l['Previous'] . '</a></span> <span style="float:right;">' . $l['Next'] . '</span>';
 						}
-						/* Exact amount, no pagination */
+						# Exact amount, no pagination
 						elseif($page == 1 && $countSer == $serPerPage) {
 							echo '<span style="float:left;"></span> <span style="float:right;"></span>';
 						}else{

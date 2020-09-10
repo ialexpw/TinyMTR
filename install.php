@@ -12,7 +12,7 @@
 	
 	include ("config.php");
 
-	/* If we have everything we need.. */
+	# If we have everything we need..
 	if(isset($_GET['do-install']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email'])) {
 		$user = $_POST['username'];
 		$pass = $_POST['password'];
@@ -20,7 +20,7 @@
 
 		$hashPass = password_hash($pass, PASSWORD_DEFAULT);
 
-		/* Install the tables */
+		# Install the tables
 		$sql = "CREATE TABLE IF NOT EXISTS cron (
 			id int(12) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			readtime text,
@@ -111,7 +111,7 @@
 	
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
+		<link href="css/main.css" rel="stylesheet" media="screen">
 		<style type="text/css">
 		  body {
 			padding-top: 20px;
@@ -143,12 +143,12 @@
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
+					<li class="active sideSpace"><a href="index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
+					<li class="sideSpace"><a href="about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
+					<li class="sideSpace"><a href="login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
 					<?php
 						if($MULTIUSER) {
 							echo '<li class="sideSpace"><a href="' . $siteLoc . 'register' . $x . '">' . $l['Register'] . '</a></li>';

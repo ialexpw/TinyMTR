@@ -8,61 +8,61 @@
 	
 	include ("config.php");
 	
-	/* Not logged in */
+	# Not logged in
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
 		header("Location: " . $siteLoc . "login" . $x);
 	}
 
 	$userLevel = $_SESSION['UserLevel'];
 
-	// Updating details
+	# Updating details
 	if(isset($_GET['update']) && !empty($_POST)) {
-		// Are we changing email?
+		# Are we changing email?
 		if(!empty($_POST['inputEmail'])) {
-			// New email
+			# New email
 			$nEmail = $_POST['inputEmail'];
 			
-			// Update the email
+			# Update the email
 			$stmt = $dbh->prepare("UPDATE users SET email = :email WHERE id = :userid");
 			$stmt->bindParam(':email', $nEmail);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}
 		
-		// Changing password?
+		# Changing password?
 		if(!empty($_POST['currentPassword']) && !empty($_POST['newPassword'])) {
-			// Store them temporarily
+			# Store them temporarily
 			$oldPass = $_POST['currentPassword'];
 			$updtPass = $_POST['newPassword'];
 			
-			// Get the users current details
+			# Get the users current details
 			$stmt = $dbh->prepare("SELECT * FROM users WHERE id = :userid");
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 
-			// Get the details so we can see the hashed password
+			# Get the details so we can see the hashed password
 			$userDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			
-			// Hash it so we can compare
+			# Hash it so we can compare
 			$hashPass = passKey($_SESSION['User'], $oldPass, CYCLE_ONE, CYCLE_TWO);
 			
-			// See if we have a match
+			# See if we have a match
 			if($userDetails[0]['password'] == $hashPass) {
-				// The password matches - first hash it
+				# The password matches - first hash it
 				$hashPass = passKey($_SESSION['User'], $updtPass, CYCLE_ONE, CYCLE_TWO);
 				
-				// Then update it
+				# Then update it
 				$stmt = $dbh->prepare("UPDATE users SET password = :password WHERE id = :userid");
 				$stmt->bindParam(':password', $hashPass);
 				$stmt->bindParam(':userid', $_SESSION['UserID']);
 				$stmt->execute();
 			}else{
-				// Password does not match
+				# Password does not match
 			}
 		}
 		
-		// Redirect back to avoid resubmission
-		header("Location: " . $siteLoc . "settings" . $x);
+		# Redirect back to avoid resubmission
+		header("Location: settings" . $x);
 	}
 ?>
 <!DOCTYPE html>
@@ -76,7 +76,7 @@
 	
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
+		<link href="css/main.css" rel="stylesheet" media="screen">
 		<style type="text/css">
 		  body {
 			padding-top: 20px;
@@ -107,18 +107,18 @@
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-			  		<li class="sideSpace"><a href="<?php echo $siteLoc; ?>overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
+			  		<li class="sideSpace"><a href="overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
+					<li class="sideSpace"><a href="monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
 					<?php
 						if($MULTISERV) {
-							echo '<li class="sideSpace"><a href="' . $siteLoc . 'remote' . $x . '">' . $l['Remote'] . '</a></li>';
+							echo '<li class="sideSpace"><a href="remote' . $x . '">' . $l['Remote'] . '</a></li>';
 						}
 					?>
-					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>settings<?php echo $x; ?>"><?php echo $l['Settings']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
+					<li class="active sideSpace"><a href="settings<?php echo $x; ?>"><?php echo $l['Settings']; ?></a></li>
+					<li class="sideSpace"><a href="logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
 				</ul>
 		  	</div>
 
@@ -129,7 +129,7 @@
 				<br />
 				<?php
 					if($_SESSION['UserLevel'] >= 5) {
-						// Show the plugin boxes
+						# Show the plugin boxes
 						echo '<p>Below are the available plugins for this version of TinyMTR</p>';
 						
 						echo '<div class="row">';
@@ -139,7 +139,7 @@
 						echo '<div class="panel-body">';
 						echo '<p>Allows TinyMTR to be used by the public, allowing sign-ups.</p>';
 						
-						// Is the plugin enabled?
+						# Is the plugin enabled?
 						if(file_exists('Plugins/MultiUser.php')) {
 							echo '<div align="center"><span class="label label-success">ENABLED</span></div>';
 						}else{
@@ -158,7 +158,7 @@
 						echo '<div class="panel-body">';
 						echo '<p>Allows you to ping from external servers in other locations.</p>';
 						
-						// Is the plugin enabled?
+						# Is the plugin enabled?
 						if(file_exists('Plugins/MultiServer.php')) {
 							echo '<div align="center"><span class="label label-success">ENABLED</span></div>';
 						}else{
@@ -251,19 +251,19 @@
 						echo '<th>Username</th>';
 						echo '<th>Email</th>';
 						
-						// If Stripe plugin enabled
+						# If Stripe plugin enabled
 						if($STRIPEINT) {
 							echo '<th>SMS Credits</th>';
 						}
 						echo '</tr>';
 
-						// Go through each user
+						# Go through each user
 						foreach($userList as $user) {
 							echo '<tr>';
 							echo '<td>' . $user['username'] . '</td>';
 							echo '<td>' . $user['email'] . '</td>';
 
-							// If Stripe plugin enabled
+							# If Stripe plugin enabled
 							if($STRIPEINT) {
 								echo '<td>' . $user['credits'] . '</td>';
 							}
@@ -273,9 +273,8 @@
 						
 						echo '</table></div>';
 
-						//echo '<p>To test your Nexmo settings, you can try running your CRON service <a href="' . $siteLoc . 'cron' . $x . '?manual">manually</a>.</p>';
 					}else{
-						// We are a normal user
+						# We are a normal user
 						$stmt = $dbh->prepare("SELECT * FROM users WHERE id = :usrid");
 						$stmt->bindParam(':usrid', $_SESSION['UserID']);
 						$stmt->execute();

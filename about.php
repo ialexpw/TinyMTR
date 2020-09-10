@@ -50,15 +50,15 @@
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
-					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
+					<li class="sideSpace"><a href="index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
+					<li class="active sideSpace"><a href="about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
+					<li class="sideSpace"><a href="login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
 					<?php
 						if($MULTIUSER) {
-							echo '<li class="sideSpace"><a href="' . $siteLoc . 'register' . $x . '">' . $l['Register'] . '</a></li>';
+							echo '<li class="sideSpace"><a href="register' . $x . '">' . $l['Register'] . '</a></li>';
 						}
 					?>
 				</ul>

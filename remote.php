@@ -10,10 +10,10 @@
 
 	/* Not logged in */
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
-		header("Location: " . $siteLoc . "login" . $x);
+		header("Location: login" . $x);
 	}
 
-	/* If not using the plugin, no point in being here */
+	# If not using the plugin, no point in being here
 	if(!$MULTISERV) {
 		exit('Multi server plugin is not installed.');
 	}
@@ -29,7 +29,7 @@
 
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
+		<link href="css/main.css" rel="stylesheet" media="screen">
 		<style type="text/css">
 		  body {
 			padding-top: 20px;
@@ -60,19 +60,19 @@
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
+					<li class="sideSpace"><a href="overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
+					<li class="sideSpace"><a href="monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
 					<?php
 						if($MULTISERV) {
-							echo '<li class="active sideSpace"><a href="' . $siteLoc . 'remote' . $x . '">' . $l['Remote'] . '</a></li>';
+							echo '<li class="active sideSpace"><a href="remote' . $x . '">' . $l['Remote'] . '</a></li>';
 						}
 
-						echo '<li class="sideSpace"><a href="' . $siteLoc . 'settings' . $x . '">' . $l['Settings'] . '</a></li>';
+						echo '<li class="sideSpace"><a href="settings' . $x . '">' . $l['Settings'] . '</a></li>';
 					?>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
+					<li class="sideSpace"><a href="logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
 				</ul>
 		  	</div>
 
@@ -96,7 +96,7 @@
 		<script>
 			// Initially load the table
 			$(document).ready(function () {
-				$('#updateDiv').load('<?php echo $siteLoc; ?>heartbeat<?php echo $x; ?>').stop().fadeIn();
+				$('#updateDiv').load('heartbeat<?php echo $x; ?>').stop().fadeIn();
 			});
 
 			// Hide the loading text
@@ -106,7 +106,7 @@
 
 			// Reload the table every 60 seconds
 			setInterval(function(){
-				$('#updateDiv').load('<?php echo $siteLoc; ?>heartbeat<?php echo $x; ?>').stop().fadeIn();
+				$('#updateDiv').load('heartbeat<?php echo $x; ?>').stop().fadeIn();
 			}, 60000);
 		</script>
 	</body>

@@ -8,25 +8,24 @@
 
 	include ("config.php");
 
-	// If not multi user, exit
+	# If not multi user, exit
 	if(!$MULTIUSER) {
 		exit('Plugin not enabled');
 	}
 
-	// Registering
+	# Registering
 	if(isset($_GET['register']) && !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email']) ) {
 		$user = $_POST['username'];
 		$pass = $_POST['password'];
 		$email = $_POST['email'];
-		$mobile = $_POST['mobile'];
 
 		if(!validateInput($user, 'user') || !validateInput($email, 'email')) {
-			header("Location: " . $siteLoc . "register" . $x . '?invalid');
+			header("Location: register" . $x . '?invalid');
 		}
 
 		$hashPass = password_hash($pass, PASSWORD_DEFAULT);
 
-		/* Try and find the user */
+		# Try and find the user
 		$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");
 		$stmt->bindParam(':username', $user);
 		$stmt->execute();
@@ -35,16 +34,16 @@
 
 		$count = count($userDetails);
 
-		/* User exists */
+		# User exists
 		if($count) {
-			header("Location: " . $siteLoc . "register" . $x . "?exists");
+			header("Location: register" . $x . "?exists");
 		}else{
-			/* Add new user */
-			$data = array( 'username' => $user, 'password' => $hashPass, 'email' => $email, 'mobile' => $mobile, 'timestamp' => time() );
-			$stmt = $dbh->prepare("INSERT INTO users (username, password, email, mobile, timestamp) VALUES (:username, :password, :email, :mobile, :timestamp)");
+			# Add new user
+			$data = array( 'username' => $user, 'password' => $hashPass, 'email' => $email, 'timestamp' => time() );
+			$stmt = $dbh->prepare("INSERT INTO users (username, password, email, timestamp) VALUES (:username, :password, :email, :timestamp)");
 			$stmt->execute($data);
 
-			header("Location: " . $siteLoc . "login" . $x);
+			header("Location: login" . $x);
 		}
 	}
 ?>
@@ -59,7 +58,7 @@
 
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
+		<link href="css/main.css" rel="stylesheet" media="screen">
 		<style type="text/css">
 		  body {
 			padding-top: 20px;
@@ -92,15 +91,14 @@
 		<div class="container-narrow">
 			<div class="masthead">
 				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
-				<!--<h2 align="center" class="muted sideSpace"><?php //echo $siteName; ?></h2><br />-->
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
+					<li class="sideSpace"><a href="index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
+					<li class="sideSpace"><a href="about<?php echo $x; ?>"><?php echo $l['About']; ?></a></li>
+					<li class="sideSpace"><a href="login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
 					<?php
 						if($MULTIUSER) {
-							echo '<li class="active sideSpace"><a href="' . $siteLoc . 'register' . $x . '">' . $l['Register'] . '</a></li>';
+							echo '<li class="active sideSpace"><a href="register' . $x . '">' . $l['Register'] . '</a></li>';
 						}
 					?>
 				</ul>
@@ -147,7 +145,7 @@
 		              		<div class="row">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-		                			<!-- Username -->
+		                			<!-- Email -->
 		                			<label class="control-label" for="email"><?php echo $l['Email']; ?></label>
 		                			<div class="controls">
 		                  				<input type="text" id="email" name="email" placeholder="" class="form-control">
@@ -171,19 +169,6 @@
 							</div>
 		              	</div>
 
-		              	<div class="control-group">
-		              		<div class="row">
-								<div class="col-md-2"></div>
-								<div class="col-md-8">
-		                			<!-- Username -->
-		                			<label class="control-label" for="mobile"><?php echo $l['Mobile']; ?></label> (Use country code. '0' for no SMS alerts.)
-		                			<div class="controls">
-		                  				<input type="text" id="mobile" name="mobile" placeholder="447712345678" class="form-control">
-		                			</div>
-		                		</div>
-								<div class="col-md-2"></div>
-							</div>
-		              	</div>
 						<br />
 		              	<div class="control-group">
 		              		<div class="row">

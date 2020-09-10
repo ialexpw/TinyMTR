@@ -10,26 +10,26 @@
 	// For TinyMTR External Server //
 	#################################
 
-	/* Define the class */
+	# Define the class
 	$TinyMTR = new TinyMTR();
 
-	/* Get the information on System Memory */
+	# Get the information on System Memory
 	$jsonInfo = json_encode($TinyMTR->getSystemMemInfo());
 	$jsonInfo = stripslashes($jsonInfo);
 
-	/* Get the information on System Load */
+	# Get the information on System Load
 	$jsonLoad = json_encode($TinyMTR->getSystemLoad());
 	$jsonLoad = stripslashes($jsonLoad);
 
-	/* Get the information on System Disk */
+	# Get the information on System Disk
 	$jsonDisk = json_encode($TinyMTR->getSystemDisk());
 	$jsonDisk = stripslashes($jsonDisk);
 
-	/* Get the information on System Uptime */
+	# Get the information on System Uptime
 	$jsonUptime = json_encode($TinyMTR->getSystemUptime());
 	$jsonUptime = stripslashes($jsonUptime);
 
-	/* Get the information from RAID */
+	# Get the information from RAID
 	$jsonRaid = json_encode($TinyMTR->getRaidInfo());
 	$jsonRaid = stripslashes($jsonRaid);
 
@@ -37,7 +37,7 @@
 	// CHECK //
 	###########
 
-	/* Respond to checks of this file */
+	# Respond to checks of this file
 	if(isset($_GET['verify'])) {
 		exit('active');
 	}
@@ -50,7 +50,7 @@
 	// MEMORY //
 	############
 
-	/* Decode the JSON and get the server memory usage */
+	# Decode the JSON and get the server memory usage
 	$jsonDecMem = json_decode($jsonInfo, true);
 	$jsonDecMemTotal = explode(' ', $jsonDecMem['MemTotal']);
 	$jsonDecMemFree = explode(' ', $jsonDecMem['MemFree']);
@@ -75,7 +75,7 @@
 	// LOAD //
 	##########
 
-	/* Decode the JSON and get the server load */
+	# Decode the JSON and get the server load
 	$jsonDecLoad = json_decode($jsonLoad, true);
 	$jsonDecLoad = explode(' ', $jsonDecLoad['load']);
 	$Load = array('load1' => $jsonDecLoad[0], 'load5' => $jsonDecLoad[1], 'load15' => $jsonDecLoad[2]);
@@ -93,7 +93,7 @@
 	// DISK //
 	##########
 
-	/* Decode the JSON and get the server disk */
+	# Decode the JSON and get the server disk
 	$jsonDecDisk = json_decode($jsonDisk, true);
 	$Disk = json_encode($jsonDecDisk);
 

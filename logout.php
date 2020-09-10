@@ -7,6 +7,8 @@
 	*/
 	
 	include ("config.php");
+
+	# Destroy the session
 	session_destroy();
 	header("Location: " . $siteLoc . "login" . $x);
 ?>

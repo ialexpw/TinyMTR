@@ -28,7 +28,7 @@
 	$siteLang = 'en';
 
 	# Version
-	$version = '1.2';
+	$version = '1.5.0';
 
 	# Option to disable the need for a TinyMTR.php file
 	$reqMtr = false;

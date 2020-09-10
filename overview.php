@@ -74,31 +74,31 @@
 			<hr>
 
 			<?php
-				/* Count the servers */
+				# Count the servers
 				$stmt = $dbh->prepare("SELECT * FROM servers WHERE userid = :userid");
 				$stmt->bindParam(':userid', $_SESSION['UserID']);
 				$stmt->execute();
 				$serDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				
-				/* See how many there are */
+				# See how many there are
 				$countSer = count($serDetails);
 
-				/* Count the records */
+				# Count the records
 				$stmt = $dbh->prepare("SELECT COUNT(*) FROM records WHERE userid = :userid");
 				$stmt->bindParam(':userid', $_SESSION['UserID']);
 				$stmt->execute();
 				$recDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-				/* Strip the beginning as the function adds this */
+				# Strip the beginning as the function adds this
 				$siteAdd = removePrefix($siteLoc);
 				$siteAdd = rtrim($siteAdd, "/");
 
-				/* Get the local server info */
+				# Get the local server info
 				$getInfo = getServerInfo($siteAdd, $externalFile);
 				$getMemPercent = round(($getInfo['memoryused'] / $getInfo['memorytotal']) * 100);
 				$memLeft = $getInfo['memorytotal'] - $getInfo['memoryused'];
 				
-				/* Style the progress bar according to usage */
+				# Style the progress bar according to usage
 				if($getMemPercent < 75) {
 					$memClass = 'progress-bar-success';
 				}else if($getMemPercent < 90 && $getMemPercent >= 75){
@@ -107,7 +107,7 @@
 					$memClass = 'progress-bar-danger';
 				}
 				
-				/* Work out disk space */
+				# Work out disk space
 				$dSpaceKB = (disk_total_space("/")/1024);
 				$dSpaceMB = $dSpaceKB/1024;
 				$dSpaceGB = round($dSpaceMB/1024, 2);
@@ -116,10 +116,6 @@
 				$dFSpaceGB = round($dFSpaceMB/1024, 1);
 				$dsUsed = round($dSpaceGB - $dFSpaceGB, 1);
 				$getSpPercent = round(($dsUsed / $dSpaceGB) * 100);
-				
-				//echo 'Disk Space: ' . $dSpaceGB . 'GB<br />';
-				//echo 'Free Disk Space: ' . $dFSpaceGB . 'GB<br />';
-				//echo 'Used Space: ' . $dsUsed . 'GB';
 				
 				$upTime = sysUptime();
 			?>
@@ -151,7 +147,7 @@
 			<br />
 			
 				<h2 align="center">TinyMTR Monitoring System</h2>
-				<h4 align="center">v1.2.0</h4>
+				<h4 align="center">v<?php echo $version; ?></h4>
 			
 			<br />
 			<div class="row">

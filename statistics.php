@@ -45,15 +45,15 @@
 		$stmt->execute();
 		
 		# Redirect back
-		header("Location: " . $siteLoc . "statistics" . $x . "?id=" . $srvID . "&5min");
+		header("Location: statistics" . $x . "?id=" . $srvID . "&5min");
 	}
 
-	/* Looking at an ID? */
+	# Looking at an ID?
 	if(!empty($_GET['id'])) {
 		$resString = '';
 		$timeString = '';
 		
-		/* Select everything to do with the server */
+		# Select everything to do with the server
 		$stmt = $dbh->prepare("SELECT * FROM servers WHERE id = :id AND userid = :userid LIMIT 1");
 		$stmt->bindParam(':id', $_GET['id']);
 		$stmt->bindParam(':userid', $_SESSION['UserID']);
@@ -62,12 +62,12 @@
 		
 		$sCount = count($srvDetails);
 		
-		/* Cannot find the server with that ID that belongs to you? */
+		# Cannot find the server with that ID that belongs to you?
 		if($sCount == 0) {
 			header("Location: " . $siteLoc . "monitor" . $x);
 		}
 		
-		/* Lets check the alerts, to see if they are set */
+		# Lets check the alerts, to see if they are set
 		$wAlerts = explode(':', $srvDetails[0]['alerts']);
 
 		/*
@@ -79,55 +79,55 @@
 			3 - Both alerts enabled
 		*/
 		
-		// Both enabled
+		# Both enabled
 		if($wAlerts[0] && $wAlerts[1]) {
 			$alrText = '3';
 		}
 
-		// Both disabled
+		# Both disabled
 		if(!$wAlerts[0] && !$wAlerts[1]) {
 			$alrText = '0';
 		}
 
-		// SMS enabled
+		# SMS enabled
 		if($wAlerts[0] && !$wAlerts[1]) {
 			$alrText = '1';
 		}
 
-		// Email enabled
+		# Email enabled
 		if(!$wAlerts[0] && $wAlerts[1]) {
 			$alrText = '2';
 		}
 		
-		/* What time period are we looking at? */
+		# What time period are we looking at?
 		if(isset($_GET['5min'])) {
-			/* Select the records for the server with the ID (5min) */
+			# Select the records for the server with the ID (5min)
 			$stmt = $dbh->prepare("SELECT * FROM records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC LIMIT 24");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}
 		elseif(isset($_GET['15min'])) {
-			/* Select the records for the server with the ID (15min) */
+			# Select the records for the server with the ID (15min)
 			$stmt = $dbh->prepare("SELECT * FROM (SELECT @row := @row +1 AS rownum, id, readtime, status, atimestamp FROM (SELECT @row :=0) r, records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC) ranked WHERE rownum %3 =1 LIMIT 48");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}
 		elseif(isset($_GET['30min'])) {
-			/* Select the records for the server with the ID (30min) */
+			# Select the records for the server with the ID (30min)
 			$stmt = $dbh->prepare("SELECT * FROM (SELECT @row := @row +1 AS rownum, id, readtime, status, atimestamp FROM (SELECT @row :=0) r, records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC) ranked WHERE rownum %6 =1 LIMIT 48");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}elseif(isset($_GET['all'])) {
-			/* Select ALL of the records */
+			# Select ALL of the records
 			$stmt = $dbh->prepare("SELECT * FROM records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}else{
-			header("Location: " . $siteLoc . "statistics" . $x . "?id=" . $_GET['id'] . "&5min");
+			header("Location: statistics" . $x . "?id=" . $_GET['id'] . "&5min");
 		}
 		
 		$recDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -135,7 +135,7 @@
 		$i=0;
 		$j=0;
 		
-		/* Hack the results into a string for the graph*/
+		# Hack the results into a string for the graph
 		foreach($recDetails as $result) {			
 			if($i==0) {
 				$resString = $result['status'] . $resString;
@@ -151,9 +151,9 @@
 				$timeString = '"' . $result['readtime'] . '",' . $timeString;
 			}
 		}
-	/* No ID given, go back */
+	# No ID given, go back
 	}else{
-		header("Location: " . $siteLoc . "monitor" . $x);
+		header("Location: monitor" . $x);
 	}
 ?>
 <!DOCTYPE html>
@@ -205,17 +205,17 @@
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-		<script src="<?php echo $siteLoc; ?>js/morris-0.4.3.min.js"></script>
+		<script src="js/morris-0.4.3.min.js"></script>
 	</head>
 	
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
-					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
+					<li class="sideSpace"><a href="overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
+					<li class="active sideSpace"><a href="monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
 					<?php
 						if($MULTISERV) {
 							echo '<li class="sideSpace"><a href="' . $siteLoc . 'remote' . $x . '">' . $l['Remote'] . '</a></li>';
@@ -223,7 +223,7 @@
 
 						echo '<li class="sideSpace"><a href="' . $siteLoc . 'settings' . $x . '">' . $l['Settings'] . '</a></li>';
 					?>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
+					<li class="sideSpace"><a href="logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
 				</ul>
 			</div>
 
@@ -232,16 +232,16 @@
 			<br />
 
 			<p align="center">
-				<a href="<?php echo $siteLoc; ?>statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min"><?php echo $l['Every5']; ?></a> | 
-				<a href="<?php echo $siteLoc; ?>statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;15min"><?php echo $l['Every15']; ?></a> | 
-				<a href="<?php echo $siteLoc; ?>statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;30min"><?php echo $l['Every30']; ?></a>
+				<a href="statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min"><?php echo $l['Every5']; ?></a> | 
+				<a href="statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;15min"><?php echo $l['Every15']; ?></a> | 
+				<a href="statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;30min"><?php echo $l['Every30']; ?></a>
 			</p>
 
 			<br />
-			<a style="margin-left:3px;" href="<?php echo $siteLoc; ?>graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min" class="btn btn-default btn-xs pull-right">View All Graphs</a>
+			<a style="margin-left:3px;" href="graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min" class="btn btn-default btn-xs pull-right">View All Graphs</a>
 			<button class="btn btn-default btn-xs modalButtons pull-right" data-toggle="modal" data-target="#myModalSub">Edit Alerts</button>
 			<?php
-				/* What text to use, depending on the monitoring time */
+				# What text to use, depending on the monitoring time
 				if(isset($_GET['5min'])) {
 					echo '<p class="sideSpace">' . $l['Int5Min'] . ' (2 hours)</p>';
 				}
@@ -285,7 +285,7 @@
 			<br />
 			<hr>
 			<?php
-				/* We must ping the server before, to avoid timeouts and hanging php */
+				# We must ping the server before, to avoid timeouts and hanging php
 				$pingDom = pingDomain($srvDetails[0]['address'], $srvDetails[0]['secure']);
 
 				/* Check external available? For mem and load usage */
@@ -295,7 +295,7 @@
 					$memLeft = $getInfo['memorytotal'] - $getInfo['memoryused'];
 
 					
-					/* Style the progress bar according to usage */
+					# Style the progress bar according to usage
 					if($getMemPercent < 75) {
 						$memClass = 'progress-bar-success';
 					}else if($getMemPercent < 90 && $getMemPercent >= 75){
@@ -304,7 +304,7 @@
 						$memClass = 'progress-bar-danger';
 					}
 
-					/* Queries for downtime/uptime */
+					# Queries for downtime/uptime
 					$stmt = $dbh->prepare("SELECT COUNT(*) FROM records WHERE serid = :id AND userid = :userid AND status = -1");
 					$stmt->bindParam(':id', $_GET['id']);
 					$stmt->bindParam(':userid', $_SESSION['UserID']);
@@ -317,13 +317,13 @@
 					$stmt->execute();
 					$srvUptime = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-					/* Record uptime and downtimes */
+					# Record uptime and downtimes
 					$recUptime = $srvUptime[0]['COUNT(*)'];
 					$recDowntime = $srvDowntime[0]['COUNT(*)'];
 
 					$totalRecords = $recUptime+$recDowntime;
 
-					/* Get the percentage */
+					# Get the percentage
 					if($recUptime != 0) {
 						$getRecPerc = round(($recDowntime / $totalRecords) * 100, 2);
 						$getUptimePerc = 100 - $getRecPerc;
@@ -331,7 +331,7 @@
 						$getUptimePerc = '0';
 					}
 
-					/* Show the stats */
+					# Show the stats
 					echo '<h4 align="center">' . $l['SerStats'] . '</h4>';
 					echo '<div class="row">';
 
@@ -457,7 +457,7 @@
 										<div class="btn-group" data-toggle="buttons">
 											<?php
 												if($useNexmo) {
-													// SMS enabled
+													# SMS enabled
 													if($alrText == '1' || $alrText == '3') {
 														echo '<label class="btn btn-success btn-xs active">';
 														echo '<input type="radio" name="sms-option" id="sms-1" value="on" checked=""> On';
@@ -467,7 +467,7 @@
 													}
 													echo '</label>';
 
-													// SMS disabled
+													# SMS disabled
 													if($alrText == '0' || $alrText == '2') {
 														echo '<label class="btn btn-danger btn-xs active">';
 														echo '<input type="radio" name="sms-option" id="sms-2" value="off" checked=""> Off';
@@ -489,7 +489,7 @@
 										<div class="btn-group" data-toggle="buttons">
 											<?php
 												if($useEmail) {
-													// Email enabled
+													# Email enabled
 													if($alrText == '2' || $alrText == '3') {
 														echo '<label class="btn btn-success btn-xs active">';
 														echo '<input type="radio" name="email-option" id="email-1" value="on" checked=""> On';
@@ -499,7 +499,7 @@
 													}
 													echo '</label>';
 
-													// Email disabled
+													# Email disabled
 													if($alrText == '0' || $alrText == '1') {
 														echo '<label class="btn btn-danger btn-xs active">';
 														echo '<input type="radio" name="email-option" id="email-2" value="off" checked=""> Off';

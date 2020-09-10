@@ -12,12 +12,12 @@
 		header("Location: " . $siteLoc . "login" . $x);
 	}
 
-	/* Looking at an ID? */
+	# Looking at an ID?
 	if(!empty($_GET['id'])) {
 		$resString = '';
 		$timeString = '';
 		
-		/* Select everything to do with the server */
+		# Select everything to do with the server
 		$stmt = $dbh->prepare("SELECT * FROM servers WHERE id = :id AND userid = :userid LIMIT 1");
 		$stmt->bindParam(':id', $_GET['id']);
 		$stmt->bindParam(':userid', $_SESSION['UserID']);
@@ -26,46 +26,46 @@
 		
 		$sCount = count($srvDetails);
 		
-		/* Cannot find the server with that ID that belongs to you? */
+		# Cannot find the server with that ID that belongs to you?
 		if($sCount == 0) {
 			header("Location: " . $siteLoc . "monitor" . $x);
 		}
 		
-		/* What time period are we looking at? */
+		# What time period are we looking at?
 		if(isset($_GET['5min'])) {
-			/* Select the records for the server with the ID (5min) */
+			# Select the records for the server with the ID (5min)
 			$stmt = $dbh->prepare("SELECT * FROM records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC LIMIT 24");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}
 		elseif(isset($_GET['15min'])) {
-			/* Select the records for the server with the ID (15min) */
+			# Select the records for the server with the ID (15min)
 			$stmt = $dbh->prepare("SELECT * FROM (SELECT @row := @row +1 AS rownum, id, readtime, load_1, load_5, load_15, memory, disk, status, atimestamp FROM (SELECT @row :=0) r, records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC) ranked WHERE rownum %3 =1 LIMIT 48");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}
 		elseif(isset($_GET['30min'])) {
-			/* Select the records for the server with the ID (30min) */
+			# Select the records for the server with the ID (30min)
 			$stmt = $dbh->prepare("SELECT * FROM (SELECT @row := @row +1 AS rownum, id, readtime, load_1, load_5, load_15, memory, disk, status, atimestamp FROM (SELECT @row :=0) r, records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC) ranked WHERE rownum %6 =1 LIMIT 48");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}elseif(isset($_GET['all'])) {
-			/* Select ALL of the records */
+			# Select ALL of the records
 			$stmt = $dbh->prepare("SELECT * FROM records WHERE serid = :serid AND userid = :userid ORDER BY atimestamp DESC");
 			$stmt->bindParam(':serid', $_GET['id']);
 			$stmt->bindParam(':userid', $_SESSION['UserID']);
 			$stmt->execute();
 		}else{
-			header("Location: " . $siteLoc . "statistics" . $x . "?id=" . $_GET['id'] . "&5min");
+			header("Location: statistics" . $x . "?id=" . $_GET['id'] . "&5min");
 		}
 		
 		$recDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	/* No ID given, go back */
+	# No ID given, go back
 	}else{
-		header("Location: " . $siteLoc . "monitor" . $x);
+		header("Location: monitor" . $x);
 	}
 ?>
 <!DOCTYPE html>
@@ -79,8 +79,8 @@
 	
 		<link href='//brick.a.ssl.fastly.net/Open+Sans:300i,400i,600i,700i,400,300,600,700' rel='stylesheet' type='text/css'>
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $siteLoc; ?>css/main.css" rel="stylesheet" media="screen">
-		<link rel="stylesheet" href="<?php echo $siteLoc; ?>css/morris-0.4.3.min.css">
+		<link href="css/main.css" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="css/morris-0.4.3.min.css">
 
 		<style type="text/css">
 		  body {
@@ -135,26 +135,25 @@
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-		<script src="<?php echo $siteLoc; ?>js/morris-0.4.3.min.js"></script>
+		<script src="js/morris-0.4.3.min.js"></script>
 	</head>
 	
 	<body>
 		<div class="container-narrow">
 			<div class="masthead">
-				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
-				<!--<h2 align="center" class="muted sideSpace"><?php //echo $siteName; ?></h2><br />-->
+				<img style="margin:0 auto; display:block;" src="img/logo.png" /><br />
 
 				<ul class="nav nav-pills nav-justified">
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
-					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
+					<li class="sideSpace"><a href="overview<?php echo $x; ?>"><?php echo $l['Overview']; ?></a></li>
+					<li class="active sideSpace"><a href="monitor<?php echo $x; ?>"><?php echo $l['Monitors']; ?></a></li>
 					<?php
 						if($MULTISERV) {
-							echo '<li class="sideSpace"><a href="' . $siteLoc . 'remote' . $x . '">' . $l['Remote'] . '</a></li>';
+							echo '<li class="sideSpace"><a href="remote' . $x . '">' . $l['Remote'] . '</a></li>';
 						}
 
-						echo '<li class="sideSpace"><a href="' . $siteLoc . 'settings' . $x . '">' . $l['Settings'] . '</a></li>';
+						echo '<li class="sideSpace"><a href="settings' . $x . '">' . $l['Settings'] . '</a></li>';
 					?>
-					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
+					<li class="sideSpace"><a href="logout<?php echo $x; ?>"><?php echo $l['Logout']; ?></a></li>
 				</ul>
 			</div>
 
@@ -163,15 +162,15 @@
 			<br />
 
 			<p align="center">
-				<a href="<?php echo $siteLoc; ?>graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min"><?php echo $l['Every5']; ?></a> | 
-				<a href="<?php echo $siteLoc; ?>graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;15min"><?php echo $l['Every15']; ?></a> | 
-				<a href="<?php echo $siteLoc; ?>graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;30min"><?php echo $l['Every30']; ?></a>
+				<a href="graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min"><?php echo $l['Every5']; ?></a> | 
+				<a href="graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;15min"><?php echo $l['Every15']; ?></a> | 
+				<a href="graphing<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;30min"><?php echo $l['Every30']; ?></a>
 			</p>
 
 			<br />
-			<a href="<?php echo $siteLoc; ?>statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min" class="btn btn-default btn-xs pull-right"><?php echo $l['BackStat']; ?></a>
+			<a href="statistics<?php echo $x; ?>?id=<?php echo $_GET['id']; ?>&amp;5min" class="btn btn-default btn-xs pull-right"><?php echo $l['BackStat']; ?></a>
 			<?php
-				/* What text to use, depending on the monitoring time */
+				# What text to use, depending on the monitoring time
 				if(isset($_GET['5min'])) {
 					echo '<p class="sideSpace">' . $l['Int5Min'] . ' (2 hours)</p>';
 				}
