@@ -1,7 +1,7 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2.1
+		Version 1.5.0
 		https://picotory.com
 		cron.php
 	*/
@@ -83,7 +83,12 @@
 			$stmt->execute();
 			$getDet = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			$lastStatus = $getDet[0]['status'];
+			# No data yet
+			if(empty($getDet)) {
+				$lastStatus = 0;
+			}else{
+				$lastStatus = $getDet[0]['status'];
+			}
 			
 			# CRON DEBUGGING
 			if($cDebug) {

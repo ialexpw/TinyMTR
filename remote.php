@@ -1,14 +1,14 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2.1
+		Version 1.5.0
 		https://picotory.com
 		remote.php
 	*/
 	
 	include ("config.php");
 
-	/* Not logged in */
+	# Not logged in
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
 		header("Location: login" . $x);
 	}

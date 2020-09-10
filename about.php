@@ -1,7 +1,7 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2.1
+		Version 1.5.0
 		https://picotory.com
 		about.php
 	*/
@@ -77,8 +77,6 @@
 			<p>After setting up your cron job to run every 5 minutes, TinyMTR will take care of all your logging for you, and will start reporting the statistics after just the 
 			first 5 minutes. Showing you the ping result times and the status of the website itself. As well as the memory and load status of the website if you wish to include it.</p>
 			
-			<p>If you wish to try out TinyMTR, give the demo a go at the <a href="http://tinymtr.co">TinyMTR</a> homepage. Or buy it <a href="http://codecanyon.net/item/tinymtr-simple-server-monitoring/6448123">here!</a></p>
-
 			<hr>
 
 		  	<div class="footer">

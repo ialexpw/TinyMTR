@@ -1,19 +1,19 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2.1
+		Version 1.5.0
 		https://picotory.com
 		heartbeat.php
 	*/
 	
 	include ("config.php");
 
-	/* Not logged in */
+	# Not logged in
 	if(!isset($_SESSION['Logged_In']) || !isset($_SESSION['User'])) {
 		header("Location: " . $siteLoc . "login" . $x);
 	}
 
-	/* If not using the plugin, no point in being here */
+	# If not using the plugin, no point in being here
 	if(!$MULTISERV) {
 		exit('Multi server plugin is not installed.');
 	}
@@ -33,7 +33,7 @@
 			foreach ($aServers as $arrServ) {
 				$cnFlag = strtolower($arrServ['Shorter']);
 
-				// Skip the local server
+				# Skip the local server
 				if($i>0) {
 					$rDet = getServerInfo($arrServ['Address'], 'TinyMTR.php');
 

@@ -1,54 +1,54 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2.1
+		Version 1.5.0
 		https://picotory.com
 		api.php
 	*/
 
 	include ("config.php");
 
-	/* Check if we have values set */
+	# Check if we have values set
 	if(isset($_GET['id']) && isset($_GET['hash'])) {
 
-		/* Try and validate the ID/Hash to the correct character format */
+		# Try and validate the ID/Hash to the correct character format
 		if(validateInput($_GET['id'],'id') && validateInput($_GET['hash'],'user')) {
 
-			/* Search for our server ID */
+			# Search for our server ID
 			$stmt = $dbh->prepare("SELECT * FROM servers WHERE id = :id");
 			$stmt->bindParam(':id', $_GET['id']);
 			$stmt->execute();
 			$serCount = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$countServ = count($serCount);
 
-			/* See if we have found it and can validate it */
+			# See if we have found it and can validate it
 			if($countServ && validateHash($_GET['id']) == $_GET['hash']) {
 
-				/* Showing the public page */
+				# Showing the public page
 				if(isset($_GET['public'])) {
 
-					/* Get uptime, and other useful information */
+					# Get uptime, and other useful information
 					$sUptime = getUptime($_GET['id']);
 					$sResponse = getResponse($_GET['id']);
 
-					/* Select last ping time */
+					# Select last ping time
 					$stmt = $dbh->prepare("SELECT readtime FROM records WHERE serid = :serid ORDER BY id DESC LIMIT 1");
 					$stmt->bindParam(':serid', $_GET['id']);
 					$stmt->execute();
 					$serCountRec = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					$countServRec = count($serCountRec);
 
-					/* Select last 5 downtimes */
+					# Select last 5 downtimes
 					$stmt = $dbh->prepare("SELECT * FROM records WHERE serid = :serid AND status = -1 ORDER BY id DESC LIMIT 5");
 					$stmt->bindParam(':serid', $_GET['id']);
 					$stmt->execute();
 					$serCountDown = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					$countServDown = count($serCountDown);
 
-					/* Include the template header for the API */
+					# Include the template header for the API
 					include ("lib/api/header.php");
 
-					/* Check if there has been any records yet */
+					# Check if there has been any records yet
 					if($countServRec) {
 						echo '<div class="col-md-3" style="border-right:#ccc 1px solid;">Last Monitored<br />' . $serCountRec[0]['readtime'] . '</div>';
 					}else{
@@ -78,13 +78,13 @@
 
 					echo '<div>';
 
-					/* Include the template footer for the API */
+					# Include the template footer for the API
 					include ("lib/api/footer.php");
 
 				}else{
 					if(isset($_GET['uptime'])) {
 
-						/* Uptime function */
+						# Uptime function
 						$sUptime = getUptime($_GET['id']);
 
 						$jsonEn = array('uptime' => "$sUptime");
@@ -93,7 +93,7 @@
 						echo $jsonEn;
 					}elseif(isset($_GET['response'])) {
 
-						/* Response function */
+						# Response function
 						$sResponse = getResponse($_GET['id']);
 
 						$jsonEn = array('response' => "$sResponse");
