@@ -96,7 +96,7 @@
 			$stmt = $dbh->prepare("INSERT INTO users (username, password, email, timestamp, level) VALUES (:username, :password, :email, :timestamp, :level)");
 			$stmt->execute($data);
 
-			header("Location: " . $siteLoc . "login" . $x);
+			header("Location: login" . $x);
 		}
 	}
 ?>

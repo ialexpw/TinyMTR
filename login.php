@@ -29,12 +29,12 @@
 				$_SESSION['UserID'] = $userDetails[0]['id'];
 				$_SESSION['UserLevel'] = $userDetails[0]['level'];
 
-				header("Location: " . $siteLoc . "overview" . $x);
+				header("Location: overview" . $x);
 			}else{
-				header("Location: " . $siteLoc . "login" . $x . '?error');
+				header("Location: login" . $x . '?error');
 			}
 		}else{
-			header("Location: " . $siteLoc . "login" . $x . '?error');
+			header("Location: login" . $x . '?error');
 		}
 	}
 ?>
@@ -89,7 +89,7 @@
 					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>login<?php echo $x; ?>"><?php echo $l['Login']; ?></a></li>
 					<?php
 						if($MULTIUSER) {
-							echo '<li class="sideSpace"><a href="' . $siteLoc . 'register' . $x . '">' . $l['Register'] . '</a></li>';
+							echo '<li class="sideSpace"><a href="register' . $x . '">' . $l['Register'] . '</a></li>';
 						}
 					?>
 				</ul>
