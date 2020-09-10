@@ -25,7 +25,6 @@
 		}
 
 		$hashPass = password_hash($pass, PASSWORD_DEFAULT);
-		//$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
 
 		/* Try and find the user */
 		$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");

@@ -52,7 +52,6 @@
 		<div class="container-narrow">
 			<div class="masthead">
 				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
-				<!--<h2 align="center" class="muted sideSpace"><?php //echo $siteName; ?></h2><br />-->
 
 				<ul class="nav nav-pills nav-justified">
 					<li class="active sideSpace"><a href="<?php echo $siteLoc; ?>index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>

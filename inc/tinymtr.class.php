@@ -61,28 +61,8 @@
 			}
 		}
 	}
-	
-	/* Hash the password */
-	function passKey($kUser, $kPass, $CycleOne, $CycleTwo) {
-		$aSalt = sha1('SprinkleofSalt/JUH+-8?,><262ghg6TR6rfGFGV.;l;[;PO]');
-	
-		$fHash = sha1($kUser . $CycleOne);
-		$sHash = sha1($kPass . $CycleTwo);
-		
-		for ($i = 0; $i < $CycleOne; $i++) {
-			$firstCycle = sha1($kUser . $CycleTwo);
-		}
-		
-		for ($j = 0; $j < $CycleTwo; $j++) {
-			$secondCycle = sha1($kPass . $CycleOne);
-		}
-		
-		$finalRound = $kUser . $aSalt . $kPass;
-		
-		return sha1($firstCycle . $finalRound . $secondCycle);
-	}
 
-	/* Function to validate the API hash */
+	# Function to validate the API hash
 	function validateHash($input) {
 		$hashString = sha1(md5($input));
 		$reHash = md5(sha1($input));
@@ -92,11 +72,11 @@
 		return $cutString;
 	}
 	
-	/* Ping a domain */
+	# Ping a domain
 	function pingDomain($domain, $secure) {
 		$staTime = microtime(true);
 		
-		/* If using SSL */
+		# If using SSL
 		if($secure) {
 			$fsOpen = @fsockopen ($domain, 443, $errNo, $errstr, 2);
 		}else{
@@ -106,7 +86,7 @@
 		$stoTime = microtime(true);
 		$theStatus = 0;
 
-		/* Site is down */
+		# Site is down
 		if (!$fsOpen) {
 			@fclose($fsOpen);
 			$theStatus = -1;  
@@ -118,7 +98,7 @@
 		return $theStatus;
 	}
 
-	/* Check for an external file */
+	# Check for an external file
 	function checkExternal($domain, $exfile) {
 		$theFile = 'http://' . $domain . '/' . $exfile;
 
@@ -129,7 +109,7 @@
 		}
 	}
 
-	/* Check to see if they have the TinyMTR file uploaded */
+	# Check to see if they have the TinyMTR file uploaded
 	function checkMTR($domain, $external, $secure, $skip=0) {
 		if(!$skip) {
 			if($secure) {
@@ -149,10 +129,10 @@
 				$getMTR = HTTP_R::M0('http://' . $domain . '/' . $external . '?verify');
 			}
 
-			/* Is the string there? */
+			# Is the string there?
 			$foundPos = strpos($getMTR, 'active');
 
-			/* Cannot find the file */
+			# Cannot find the file
 			if ($foundPos === false) {
 				return false;
 			}else{
@@ -163,7 +143,7 @@
     	}
 	}
 
-	/* Check system uptime */
+	# Check system uptime
 	function sysUptime() {
 		$array = array();
 		$fh = fopen('/proc/uptime', 'r');
@@ -174,7 +154,7 @@
 		return $array['uptime'];
 	}
 
-	/* Convert to readable format */
+	# Convert to readable format
 	function sec2human($time) {
 		$seconds = $time%60;
 		$mins = floor($time/60)%60;
@@ -183,7 +163,7 @@
 		return $days > 0 ? $days . ' day'.($days > 1 ? 's' : '') : $hours.':'.$mins.':'.$seconds;
 	}
 
-	/* Valid domain check */
+	# Valid domain check
 	function validDomain($domainCheck) {
 	    return (preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domainCheck) //valid chars check
 			&& preg_match("/^.{1,253}$/", $domainCheck) //overall length check
@@ -194,17 +174,17 @@
 	// Cron functions //
 	####################
 
-	/* Function to ping from external server */
+	# Function to ping from external server
 	function pingFrom($srv, $toping, $secure) {
 		/* Create the URL to the external file */
 		$output = HTTP_R::M0('http://' . $srv . '/Ex-MTR.php?domain=' . $toping . '&secure=' . $secure);
 
-		/* Get just the part we need */
+		# Get just the part we need
 		$getPing = json_decode($output, true);
 		return $getPing['response'];
 	}
 	
-	/* Function to send an SMS message */
+	# Function to send an SMS message ~ unused
 	function sendSMS($txtNum, $nexKey, $nexSecret, $txtTitle, $serAddr, $time, $id, $back_up = 0) {
 		$nexmoSMS = new NexmoMessage($nexKey, $nexSecret);
 		/* Server is coming back up! */
@@ -213,10 +193,9 @@
 		}else{
 			$info = $nexmoSMS->sendText($txtNum, $txtTitle, 'Server: ID (' . $id . ') -> ' . $serAddr . ' seems to be offline @ ' . $time . '!');
 		}
-		
 	}
 
-	/* Send the email */
+	# Send the email ~ need to update
 	function sendEmail($email, $serAddr, $id, $back_up = 0) {
 		$mailer = new Simple_Mail();
 		
@@ -245,21 +224,20 @@
 		return true;
 	}
 
-	/* Get server details */
+	# Get server details
 	function getServerInfo($domain, $exfile) {
-		/* Create the URL to the external file */
+		# Create the URL to the external file
 		$output = HTTP_R::M0('http://' . $domain . '/' . $exfile);
 		
-		/* Get just the part we need */
+		# Get just the part we need
 		$expData = explode('::', $output);
 		$expData1 = json_decode($expData[0], true);
 		$expData2 = json_decode($expData[1], true);
 		$expData3 = json_decode($expData[2], true);
 		$expData4 = json_decode($expData[3], true);
 
-		/* Merge the arrays */
+		# Merge the arrays
 		$expData = array_merge($expData1, $expData2, $expData3, $expData4);
-
 		return $expData;
 	}
 ?>

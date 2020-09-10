@@ -36,21 +36,11 @@
 	# Records
 	$keepLast = 31; // How many days to keep records for (should normally leave this as-is) put 0 to not remove any
 
-	/* MySQL Connection */
+	# SQL credentials
 	define('HOST', 'localhost');
 	define('DBSE', 'Database_name');
 	define('USER', 'Database_user');
 	define('PASS', 'Database_pass');
-	
-	/* Password Hashing ~ Do NOT change after install */
-	define('CYCLE_ONE', '15000');
-	define('CYCLE_TWO', '10000');
-	
-	# SMS Gateway ~ Nexmo.com ~ When entering no. use Country code (no symbols!!) (READ: https://help.nexmo.com/entries/24570217-Getting-Started-Guide)
-	$useNexmo = 0;
-	$nexKey = '';
-	$nexSecret = '';
-	$txtTitle = 'Status-Alert'; // Title/subject of the text message sent (no spaces)
 
 	# Email Sending
 	$useEmail = 0;
@@ -81,11 +71,6 @@
 	
 	# Work out how many records to keep
 	$keepLast = $keepLast * (1440/$cInterval);
-	
-	# If not using Nexmo, set to unused number
-	if(!$useNexmo) {
-		$txtNumber = '0123456789';
-	}
 	
 	# Database connection
 	$sqlError = 0;

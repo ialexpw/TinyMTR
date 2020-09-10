@@ -12,20 +12,16 @@
 		$user = $_POST['username'];
 		$pass = $_POST['password'];
 
-		//$hashPass = passKey($user, $pass, CYCLE_ONE, CYCLE_TWO);
-
-		/* Try and find the user */
-		//$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username AND password = :password");
+		# Lookup the user
 		$stmt = $dbh->prepare("SELECT * FROM users WHERE username = :username");
 		$stmt->bindParam(':username', $user);
-		//$stmt->bindParam(':password', $hashPass);
 		$stmt->execute();
 
 		$userDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		$count = count($userDetails);
 		
-		// Account exists
+		# Account exists
 		if($count) {
 			if(password_verify($pass, $userDetails[0]['password'])) {
 				$_SESSION['Logged_In'] = 1;
@@ -86,7 +82,6 @@
 		<div class="container-narrow">
 			<div class="masthead">
 				<img style="margin:0 auto; display:block;" src="<?php echo $siteLoc; ?>img/logo.png" /><br />
-				<!--<h2 align="center" class="muted sideSpace"><?php //echo $siteName; ?></h2><br />-->
 
 				<ul class="nav nav-pills nav-justified">
 					<li class="sideSpace"><a href="<?php echo $siteLoc; ?>index<?php echo $x; ?>"><?php echo $l['Home']; ?></a></li>
