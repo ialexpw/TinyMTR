@@ -22,7 +22,7 @@
 	$siteName = 'TinyMTR';
 	$siteLoc = 'http://yoursite.com/TinyMTR/';	// With final '/'
 	$externalFile = 'TinyMTR.php';	// View the documentation
-	$usePrettyURLs = 0;	// Do not need to change ~ Docs coming in v1.3.0
+	$usePrettyURLs = 0;	// Do not need to change ~ Docs coming in v2
 
 	# Language
 	$siteLang = 'en';
