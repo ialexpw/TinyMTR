@@ -1,7 +1,7 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2.1
+		Version 1.5.0
 		https://picotory.com
 		autoload.php
 	*/
@@ -13,28 +13,26 @@
 	/*
 	 * Multi-Server Plugin
 	 * Allows you to ping from external servers in other locations
-	 * Release: TBA ~ not guaranteed
 	*/
 	$MULTISERV = 0;
 	
 	/*
 	 * Multi-User Plugin
 	 * Allows multiple users to register and use TinyMTR
-	 * Release: 08/01/2014 (8th January 2014)
 	*/
 	$MULTIUSER = 0;
 	
 	/*
 	 * Stripe Payments Plugin
 	 * Allows integration of Stripe, to buy credits to use on SMS'
-	 * Release: TBA ~ not guaranteed
+	 * Release: TBA
 	*/
 	$STRIPEINT = 0;
 
 	/*
 	 * Port Monitor Plugin
 	 * Allows ports other than 80 and 243 to be monitored inside TinyMTR
-	 * Release: TBA ~ not guaranteed
+	 * Release: TBA
 	*/
 	$PORTMONITOR = 0;
 
