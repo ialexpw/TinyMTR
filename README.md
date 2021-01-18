@@ -17,3 +17,8 @@ TinyMTR is a multi-server monitor written in PHP and uses MySQL for storage of d
 1. Log in with your chosen username and password
 
 ## Screenshots
+![Alt text](/img/repo/overview.png?raw=true "System Overview")
+![Alt text](/img/repo/monitors.png?raw=true "Monitors Page")
+![Alt text](/img/repo/statistics.png?raw=true "Server Statistics")
+![Alt text](/img/repo/status.png?raw=true "Public Status Page")
+![Alt text](/img/repo/settings.png?raw=true "Settings")
