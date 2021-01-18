@@ -1,7 +1,7 @@
 <?php
 	/*
 		TinyMTR Web Monitor
-		Version 1.2.1
+		Version 1.5.0
 		https://picotory.com
 		tinymtr.class.php
 	*/
@@ -182,17 +182,6 @@
 		# Get just the part we need
 		$getPing = json_decode($output, true);
 		return $getPing['response'];
-	}
-	
-	# Function to send an SMS message ~ unused
-	function sendSMS($txtNum, $nexKey, $nexSecret, $txtTitle, $serAddr, $time, $id, $back_up = 0) {
-		$nexmoSMS = new NexmoMessage($nexKey, $nexSecret);
-		/* Server is coming back up! */
-		if($back_up) {
-			$info = $nexmoSMS->sendText($txtNum, $txtTitle, 'Server: ID (' . $id . ') -> ' . $serAddr . ' seems to be back online @ ' . $time . '!');
-		}else{
-			$info = $nexmoSMS->sendText($txtNum, $txtTitle, 'Server: ID (' . $id . ') -> ' . $serAddr . ' seems to be offline @ ' . $time . '!');
-		}
 	}
 
 	# Send the email ~ need to update

@@ -52,7 +52,7 @@
 	# Cron debug
 	$cDebug = 0;
 
-	# Cron interval in minutes ~ THIS IS WHAT YOU HAVE SET IN CRONTAB/CPANEL
+	# Cron interval in minutes ~ THIS IS WHAT YOU HAVE SET IN CRONTAB/CPANEL (should be either "1" or "5" minutes)
 	$cInterval = 5;
 	
 	# Using pretty URLs, so no extension
